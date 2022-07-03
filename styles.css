@@ -98,7 +98,7 @@ main {
 }
 #main-name {
   font-family: 'The Nautigal', cursive;
-  font-size: 100px;
+  font-size: 75px;
 }
 section {
   display: flex;
@@ -163,7 +163,7 @@ section {
 }
 #email-area {
   padding: 10px;
-  width: 500px;
+  width: 375px;
   border: 1px solid white;
 }
 #email-form {
