@@ -1,0 +1,142 @@
+body {
+  color: darkslategrey;
+  background-color: var(--bs-gray-300);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  width: 250px;
+  max-width: 100%;
+  height: auto;
+  transition: 100ms linear;
+}
+
+img:hover {
+  transform: scale(1.2);
+}
+
+.rounded {
+  border-radius: 50%;
+}
+
+.navbar {
+  padding: 0;
+  text-align: center;
+  background-color: darkslategrey !important;
+  box-shadow: 5px 0 10px var(--bs-black);
+}
+
+.navbar-brand{
+  color: var(--bs-white);
+  transition: 100ms linear;
+  cursor: default;
+}
+
+.navbar-brand:hover{
+  color: var(--bs-white);
+  transform: scale(1.1);
+}
+
+.navbar-brand:visited{
+  color: var(--bs-white);
+}
+
+.dw {
+  font-family: 'The Nautigal', cursive;
+  font-size: 30px;
+}
+
+.navbar-brand span:not(.dw){
+  display: none;
+}
+
+.nav-item {
+  cursor: pointer;
+}
+
+.nav-link{
+  color: var(--bs-white);
+}
+
+.nav-link:hover {
+  background-color: var(--bs-white);
+  color: darkslategrey;
+  box-shadow: 0 0 10px var(--bs-black);
+}
+
+#search {
+  margin: 0 0 10px 0;
+}
+
+main {
+  transition: all 400ms;
+  height: 100vh;
+}
+
+#slider {
+  height: 100%;
+}
+
+.carousel-inner {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
+.display-1 {
+  font-family: 'The Nautigal', cursive;
+}
+
+.material-symbols-outlined{
+  color: var(--bs-black);
+}
+
+#projects,
+#credentials {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#resume {
+  width: 750px;
+  height: 800px;
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: translateX(-300px);
+    opacity: 0%;
+  }
+  100% {
+    transform: translateX(0px);
+    opacity: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .navbar-brand span:not(.dw){
+    display: initial;
+  }
+
+  .nav-link{
+    padding: 15px 0 0 0;
+    margin: 0 0 15px 0;
+    height: 115%;
+  }
+
+  #search {
+    margin: 0;
+  }
+
+  #projects,
+  #credentials {
+  flex-flow: row wrap;
+}
+}
