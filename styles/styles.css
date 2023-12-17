@@ -110,7 +110,7 @@ main {
 }
 
 #resume {
-  width: 750px;
+  width: 500px;
   height: 800px;
 }
 
@@ -142,6 +142,10 @@ main {
 
   #projects,
   #credentials {
-  flex-flow: row wrap;
-}
+    flex-flow: row wrap;
+  }
+
+  #resume {
+    width: 750px;
+  }
 }
