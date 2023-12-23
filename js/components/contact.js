@@ -1,7 +1,6 @@
 export class ContactPage extends HTMLElement {
     constructor(){
         super();
-        ContactPage.shadowRoot = this.attachShadow({mode: "open"});
     }
     connectedCallback(){
         console.log(this.constructor.name + " connected to DOM")
