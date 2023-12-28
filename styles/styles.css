@@ -82,8 +82,13 @@ main {
   height: 100vh;
 }
 
-#slider {
+#pages {
   height: 100%;
+}
+
+.carousel-item {
+  height: 100%;
+  overflow: scroll;
 }
 
 .carousel-inner {
@@ -91,6 +96,12 @@ main {
   align-items: center;
   text-align: center;
   height: 100%;
+}
+
+.card-group {
+  display: flex;
+  justify-content: center;
+  overflow: scroll;
 }
 
 .display-1 {
@@ -139,12 +150,21 @@ main {
     margin: 0;
   }
 
+  .carousel-item {
+    height: initial;
+  }
+
+  .card-group {
+    flex-flow: row;
+  }
+
   #projects,
   #credentials {
     flex-flow: row wrap;
   }
 
   #resume {
+    height: 600px;
     width: 750px;
   }
 }

@@ -1,6 +1,7 @@
 export class CredentialsPage extends HTMLElement {
     constructor(){
         super();
+        //CredentialsPage.shadowRoot = this.attachShadow({mode: "open"});
     }
     connectedCallback(){
         console.log(this.constructor.name + " connected to DOM")
