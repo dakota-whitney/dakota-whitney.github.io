@@ -1,7 +1,8 @@
-import { customTag, customPrefix } from "./utils.js";
-import config from "./config.json" assert {type: 'json'};
+import { customTag, customPrefix, gFetch } from "./utils.js";
 
 export class AboutPage extends HTMLElement {
+    static prefix = customPrefix(this.name)
+    static gQuery = {page: this.prefix}
     constructor(){
         super();
         customElements.define(Card.tag, Card);
@@ -11,8 +12,13 @@ export class AboutPage extends HTMLElement {
         const { name } = this.constructor;
         console.log(name + " connected to DOM");
 
-        const gRes = await fetch(`https://script.google.com/macros/s/${config.gId}/exec?page=${customPrefix(name)}`);
-        let likes = await gRes.json();
+        const likes = await this.fetchLikes();
+        const likeGroup = this.querySelector(".card-group")
+        for(const like of likes) likeGroup.append(like)
+    }
+    async fetchLikes(size = 10){
+        const gQuery = new URLSearchParams({...AboutPage.gQuery, size: size});
+        let likes = await gFetch(gQuery);
         console.log(likes);
 
         likes = likes.map(snippet => {
@@ -20,9 +26,7 @@ export class AboutPage extends HTMLElement {
             likeCard.data = snippet;
             return likeCard;
         });
-
-        const likeGroup = this.querySelector(".card-group")
-        for(const like of likes) likeGroup.append(like)
+        return likes;
     }
     disconnectedCallback() {
         console.log(this.constructor.name + " removed from DOM");
