@@ -1,26 +1,43 @@
 import { Octokit } from "https://esm.sh/octokit";
 
 export class ProjectsPage extends HTMLElement {
-    static octokit = new Octokit({});
+    static gh = new Octokit({}).rest;
+    static username = "dakota-whitney"
+    static ghQuery = {
+        owner: this.username,
+        headers: {
+            "X-GitHub-Api-Version": "2022-11-28"
+        }
+    }
     constructor(){
         super();
+        this.repos = new Map();
     }
-    connectedCallback(){
+    async connectedCallback(){
         console.log(this.constructor.name + " connected to DOM");
-        this.fetchCode();
-    }
-    async fetchCode(){
-        const ghReq = {
-            owner: "dakota-whitney",
-            repo: "dakota-whitney.github.io",
-            tree_sha: "main",
-            headers: {
-                "X-GitHub-Api-Version": "2022-11-28"
-            }
-        }
+        const {gh, username} = ProjectsPage;
 
-        const { data } = await ProjectsPage.octokit.rest.git.getTree(ghReq)
-        console.log(data);
+        let {data: repos} = await gh.repos.listForUser({username: username});
+        repos = repos.sort(({updated_at: a}, {updated_at: b}) => new Date(b) - new Date(a))
+            .map(({name}) => name)
+            .slice(0,3);
+
+        for(const repo of repos) await this.fetchCode(repo);
+        console.log(this.repos)
+    }
+    async fetchCode(repo, tree_sha = "main"){
+        const {gh, ghQuery} = ProjectsPage;
+        const query = {...ghQuery, repo: repo}
+
+        let {data: {tree}} = await gh.git.getTree({...query, tree_sha: tree_sha, recursive: "true"});
+        tree = tree.filter(({type}) => type == "blob").map(({path}) => path);
+
+        for(const file of tree){
+            const {data: {content}} = await gh.repos.getContent({...query, path: file});
+            this.repos.set(repo, atob(content));
+        };
+        
+        return this.repos;
     }
     disconnectedCallback() {
         console.log(this.constructor.name + " removed from DOM");

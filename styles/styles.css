@@ -88,7 +88,7 @@ main {
 
 .carousel-item {
   height: 100%;
-  overflow: visible;
+  overflow: scroll;
 }
 
 .carousel-inner {
@@ -157,6 +157,7 @@ main {
 
   .carousel-item {
     height: initial;
+    overflow: initial;
   }
 
   .card-group {
