@@ -1,31 +1,31 @@
-import { customTag, customPrefix, gFetch } from "./utils.js";
+import { customTag, customPrefix, gFetch } from "../utils.js";
 
 export class AboutPage extends HTMLElement {
     static prefix = customPrefix(this.name)
-    static gQuery = {page: this.prefix}
     constructor(){
         super();
         customElements.define(Card.tag, Card);
         customElements.define(LikeCard.tag, LikeCard);
     }
-    async connectedCallback(){
+    connectedCallback(){
         const { name } = this.constructor;
         console.log(name + " connected to DOM");
-
-        const likes = await this.fetchLikes();
-        const likeGroup = this.querySelector(".card-group")
-        for(const like of likes) likeGroup.append(like)
+        this.fetchLikes();
     }
     async fetchLikes(size = 10){
-        const gQuery = new URLSearchParams({...AboutPage.gQuery, size: size});
-        let likes = await gFetch(gQuery);
+        const { prefix } = AboutPage;
+        const likeGroup = this.querySelector(".card-group")
+
+        let likes = await gFetch(prefix, {size: size});
         console.log(likes);
 
         likes = likes.map(snippet => {
             const likeCard = document.createElement(LikeCard.tag, {is: LikeCard.tag});
             likeCard.data = snippet;
+            likeGroup.append(likeCard);
             return likeCard;
         });
+
         return likes;
     }
     disconnectedCallback() {

@@ -1,12 +1,26 @@
-//import { Octokit, App } from "https://esm.sh/octokit";
+import { Octokit } from "https://esm.sh/octokit";
 
 export class ProjectsPage extends HTMLElement {
+    static octokit = new Octokit({});
     constructor(){
         super();
-        //ProjectsPage.shadowRoot = this.attachShadow({mode: "open"});
     }
     connectedCallback(){
-        console.log(this.constructor.name + " connected to DOM")
+        console.log(this.constructor.name + " connected to DOM");
+        this.fetchCode();
+    }
+    async fetchCode(){
+        const ghReq = {
+            owner: "dakota-whitney",
+            repo: "dakota-whitney.github.io",
+            tree_sha: "main",
+            headers: {
+                "X-GitHub-Api-Version": "2022-11-28"
+            }
+        }
+
+        const { data } = await ProjectsPage.octokit.rest.git.getTree(ghReq)
+        console.log(data);
     }
     disconnectedCallback() {
         console.log(this.constructor.name + " removed from DOM");

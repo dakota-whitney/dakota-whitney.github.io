@@ -3,7 +3,7 @@ import { ProjectsPage } from "./components/projects.js"
 import { ResumePage } from "./components/resume.js"
 import { CredentialsPage } from "./components/credentials.js"
 import { ContactPage } from "./components/contact.js"
-import { customTag, customTemplate } from "./components/utils.js"
+import { customTag, customTemplate } from "./utils.js"
 
 export class PageSlider extends HTMLElement {
   static tag = customTag(this.name);
@@ -43,15 +43,12 @@ export class PageSlider extends HTMLElement {
     const {root, navBar, id: mainId} = PageSlider;
 
     const innerRoot = root.querySelector(".carousel-inner");
-    for(const [,contentCard] of PageSlider.pages) innerRoot.append(contentCard);
+    for(const [,customPage] of PageSlider.pages) innerRoot.append(customPage);
 
     PageSlider.root = bootstrap.Carousel.getOrCreateInstance(root);
-    this.id = mainId;
-
     navBar.forEach((pageNav, i) => pageNav.addEventListener("click", () => PageSlider.root.to(i)));
+
     innerRoot.children[0].classList.add("active");
-  }
-  attributeChangedCallback(name, oldValue, newValue){
-    console.log(`Attribute ${name} has changed from ${oldValue} to ${newValue}`);
+    this.id = mainId;
   }
 };

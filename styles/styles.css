@@ -88,7 +88,7 @@ main {
 
 .carousel-item {
   height: 100%;
-  overflow: scroll;
+  overflow: visible;
 }
 
 .carousel-inner {
@@ -103,7 +103,6 @@ main {
   justify-content: center;
   flex-flow: column;
   align-items: center;
-  overflow: scroll;
 }
 
 .display-1 {
@@ -162,6 +161,8 @@ main {
 
   .card-group {
     flex-flow: row;
+    justify-content: initial;
+    overflow: scroll;
   }
 
   #projects,
