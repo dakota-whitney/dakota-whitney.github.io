@@ -1,10 +1,12 @@
-export class ContactPage extends HTMLElement {
+import { CustomTemplate } from "./custom.js";
+
+export class CredentialsPage extends CustomTemplate {
     constructor(){
         super();
-        //ContactPage.shadowRoot = this.attachShadow({mode: "open"});
     }
     connectedCallback(){
-        console.log(this.constructor.name + " connected to DOM")
+        console.log(this.constructor.name + " connected to DOM");
+        this.cloneTemplate(this.constructor.name);
     }
     disconnectedCallback() {
         console.log(this.constructor.name + " removed from DOM");

@@ -87,6 +87,7 @@ main {
 }
 
 .carousel-item {
+  margin-top: 100px;
   height: 100%;
   overflow: scroll;
 }

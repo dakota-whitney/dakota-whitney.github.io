@@ -1,32 +1,43 @@
-import { customTag, customPrefix, gFetch } from "../utils.js";
+import { CustomTemplate, Card, customTag, customPrefix } from "./custom.js";
+import config from "./config.json" assert {type: 'json'};
 
-export class AboutPage extends HTMLElement {
+async function gFetch(pageId, query = {}){
+  const gURL = new URL("https://script.google.com");
+  gURL.pathname = `macros/s/${config.gId}/exec`;
+  gURL.search = new URLSearchParams({page: pageId, ...query});
+  
+  const gRes = await fetch(gURL);
+  return await gRes.json();
+};
+
+export class AboutPage extends CustomTemplate {
     static prefix = customPrefix(this.name)
     constructor(){
         super();
-        customElements.define(Card.tag, Card);
+        this._likes = [];
         customElements.define(LikeCard.tag, LikeCard);
     }
-    connectedCallback(){
-        const { name } = this.constructor;
-        console.log(name + " connected to DOM");
-        this.fetchLikes();
+    get likes(){
+        return this._likes;
     }
-    async fetchLikes(size = 10){
-        const { prefix } = AboutPage;
-        const likeGroup = this.querySelector(".card-group")
-
-        let likes = await gFetch(prefix, {size: size});
-        console.log(likes);
-
-        likes = likes.map(snippet => {
+    set likes(snippets){
+        const likeGroup = this.querySelector(".card-group");
+        this._likes = snippets.map(snippet => {
             const likeCard = document.createElement(LikeCard.tag, {is: LikeCard.tag});
             likeCard.data = snippet;
-            likeGroup.append(likeCard);
-            return likeCard;
+            return likeGroup.appendChild(likeCard);
         });
-
-        return likes;
+    }
+    connectedCallback(){
+        console.log(this.constructor.name + " connected to DOM");
+        this.cloneTemplate(this.constructor.name);
+        this.fetchLikes(10);
+    }
+    async fetchLikes(n){
+        const {prefix} = AboutPage;
+        this.likes = await gFetch(prefix, {size: n});
+        console.log(this.likes);
+        return this.likes;
     }
     disconnectedCallback() {
         console.log(this.constructor.name + " removed from DOM");
@@ -39,16 +50,6 @@ export class AboutPage extends HTMLElement {
     }
 };
 
-class Card extends HTMLElement {
-    static prefix = customPrefix(this.name);
-    static tag = "bs-" + this.prefix;
-    static _template = document.getElementById(`${this.prefix}-template`).content;
-    constructor(){
-        super();
-        this.template = Card._template.cloneNode(true);
-    }
-};
-
 class LikeCard extends Card {
     static tag = customTag(this.name);
     static bsMap = new Map([
@@ -57,19 +58,16 @@ class LikeCard extends Card {
         ["thumbnail", ".card-img-top"]
     ])
     constructor(){
-        const card = super();
-        this.card = card;
+        super();
     }
     connectedCallback(){
         console.log(this.constructor.name + " connected to DOM");
-        this.append(this.card.template);
-
+        this.cloneTemplate(this._prefix);
+  
         for(const [dataId, bsClass] of LikeCard.bsMap){
             const bsEl = this.querySelector(bsClass);
-
             if(dataId == "thumbnail") bsEl.src = this.data[dataId];
             else bsEl.innerText = this.data[dataId];
-
             bsEl.id = this.id + "-" + dataId;
         };
     }
@@ -77,12 +75,13 @@ class LikeCard extends Card {
         return this.dataset;
     }
     set data(snippet){
-        const {thumbnails: {medium: {url: thumbnail}}, resourceId: {videoId: likeId}} = snippet;
-        snippet.thumbnail = thumbnail;
+        snippet.thumbnail = snippet.thumbnails.medium.url;
         delete snippet.thumbnails;
         console.log(snippet);
-
-        this.id = likeId;
+  
+        this.id = snippet.resourceId.videoId;
         for(const dataId in snippet) this.dataset[dataId] = snippet[dataId];
     }
-};
+  };
+
+export {gFetch}
