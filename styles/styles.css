@@ -157,6 +157,7 @@ main {
   }
 
   .carousel-item {
+    margin-top: initial;
     height: initial;
     overflow: initial;
   }
