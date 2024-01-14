@@ -11,15 +11,15 @@ async function gFetch(pageId, query = {}){
 };
 
 export class AboutPage extends CustomTemplate {
-    static prefix = customPrefix(this.name)
+    static prefix = customPrefix(this.name);
     constructor(){
         super();
         this._likes = [];
         customElements.define(LikeCard.tag, LikeCard);
-    }
+    };
     get likes(){
         return this._likes;
-    }
+    };
     set likes(snippets){
         const likeGroup = this.querySelector(".card-group");
         this._likes = snippets.map(snippet => {
@@ -27,32 +27,23 @@ export class AboutPage extends CustomTemplate {
             likeCard.data = snippet;
             return likeGroup.appendChild(likeCard);
         });
-    }
+    };
     connectedCallback(){
         console.log(this.constructor.name + " connected to DOM");
         this.cloneTemplate(this.constructor.name);
         this.fetchLikes(10);
-    }
+    };
     async fetchLikes(n){
         const {prefix} = AboutPage;
         this.likes = await gFetch(prefix, {size: n});
         console.log(this.likes);
         return this.likes;
-    }
-    disconnectedCallback() {
-        console.log(this.constructor.name + " removed from DOM");
-    }
-    adoptedCallback() {
-        console.log(this.constructor.name + " moved from DOM");
-    }
-    attributeChangedCallback(name, oldValue, newValue) {
-        console.log(`Attribute ${name} has changed from ${oldValue} to ${newValue}`);
-    }
+    };
 };
 
 class LikeCard extends Card {
     static tag = customTag(this.name);
-    static bsMap = new Map([
+    static meta = new Map([
         ["title", ".card-title"],
         ["artist", ".card-subtitle"],
         ["thumbnail", ".card-img-top"]
@@ -64,22 +55,24 @@ class LikeCard extends Card {
         console.log(this.constructor.name + " connected to DOM");
         this.cloneTemplate(this._prefix);
   
-        for(const [dataId, bsClass] of LikeCard.bsMap){
-            const bsEl = this.querySelector(bsClass);
-            if(dataId == "thumbnail") bsEl.src = this.data[dataId];
-            else bsEl.innerText = this.data[dataId];
-            bsEl.id = this.id + "-" + dataId;
+        for(const [dataId, cardClass] of LikeCard.meta){
+            const cardMeta = this.querySelector(cardClass);
+            if(dataId == "thumbnail") cardMeta.src = this.data[dataId];
+            else cardMeta.innerText = this.data[dataId];
+            cardMeta.id = this.id + "-" + dataId;
         };
     }
     get data(){
         return this.dataset;
     }
     set data(snippet){
+        this.id = snippet.resourceId.videoId;
+        delete snippet.resourceId;
+        
         snippet.thumbnail = snippet.thumbnails.medium.url;
         delete snippet.thumbnails;
-        console.log(snippet);
+        delete snippet.description;
   
-        this.id = snippet.resourceId.videoId;
         for(const dataId in snippet) this.dataset[dataId] = snippet[dataId];
     }
   };

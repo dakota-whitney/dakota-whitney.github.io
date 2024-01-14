@@ -1,5 +1,5 @@
 import { Octokit } from "https://esm.sh/octokit";
-import { CustomTemplate, customTag } from "./custom.js";
+import { CustomTemplate, customTag, customPrefix } from "./custom.js";
 
 export class ProjectsPage extends CustomTemplate {
     static gh = new Octokit({}).rest
@@ -21,9 +21,9 @@ export class ProjectsPage extends CustomTemplate {
     async connectedCallback(){
         console.log(this.constructor.name + " connected to DOM");
         this.cloneTemplate(this.constructor.name);
-        // const [repo] = await this.fetchRepos(1);
-        // await this.fetchCode(repo);
-        // console.log(this.repos)
+        const [repo] = await this.fetchRepos(1);
+        await this.fetchCode(repo);
+        console.log(this.repos)
     }
     async fetchRepos(n){
         const {data: repos} = await ProjectsPage.repos;
@@ -53,10 +53,14 @@ export class ProjectsPage extends CustomTemplate {
         return this._repos;
     }
     set repos([repo, code]){
+        const repoTabs = this.querySelector(".nav-tabs")
         const repoTab = document.createElement(RepoTab.tag, {is: RepoTab.tag});
-        repoTab.id = repo;
-        const listGroup = repoTab.querySelector(".list-group");
 
+        repoTabs.append(repoTab);
+        repoTab.id = repo;
+        repoTab.querySelector(".nav-link").innerText = repoTab.id;
+
+        const listGroup = repoTab.querySelector(".list-group");
         for(const filePath of code.keys()){
             const fileItem = document.createElement("li");
             fileItem.classList.add("list-group-item");
@@ -65,7 +69,6 @@ export class ProjectsPage extends CustomTemplate {
             listGroup.append(fileItem);
         };
 
-        this.querySelector(".nav-tabs").append(repoTab);
         this._repos.set(repo, code);
     }
     showCode(repo, filePath){
@@ -74,15 +77,6 @@ export class ProjectsPage extends CustomTemplate {
             .map(path => `<li class="breadcrumb-item" aria-current="page">${path}`)
             .join("</li>") + "</li>";
         repoTab.querySelector("code").innerText = this.repos.get(repo).get(filePath);
-    }
-    disconnectedCallback() {
-        console.log(this.constructor.name + " removed from DOM");
-    }
-    adoptedCallback() {
-        console.log(this.constructor.name + " moved from DOM");
-    }
-    attributeChangedCallback(name, oldValue, newValue) {
-        console.log(`Attribute ${name} has changed from ${oldValue} to ${newValue}`);
     }
 }
 

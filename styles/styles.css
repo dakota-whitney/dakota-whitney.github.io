@@ -113,12 +113,36 @@ main {
   color: var(--bs-white);
 }
 
-#projects,
+#project-links,
 #credentials {
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
   align-items: center;
+}
+
+.nav-tabs {
+  background-color: var(--bs-white);
+  margin: 0 0 30px 0;
+  border: 1px solid;
+  width: 100%;
+}
+
+repo-tab {
+  width: 95%;
+}
+
+.repo-name {
+  color: var(--bs-white);
+  background-color: darkslategray;
+  text-align: left;
+}
+
+code {
+  width: 400px;
+  height: 850px;
+  text-align: left;
+  overflow: scroll;
 }
 
 #resume {
@@ -168,9 +192,26 @@ main {
     overflow: scroll;
   }
 
-  #projects,
+  #projects > .display-1 {
+    margin: 200px 0 0 0;
+  }
+
+  #project-links,
   #credentials {
     flex-flow: row wrap;
+  }
+
+  repo-tab {
+    width: 100%;
+  }
+
+  .repo-name{
+    font-weight: bolder;
+  }
+
+  code {
+    width: 100%;
+    height: 600px;
   }
 
   #resume {

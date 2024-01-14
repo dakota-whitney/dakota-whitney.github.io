@@ -5,16 +5,7 @@ export class ContactPage extends CustomTemplate {
         super();
     }
     connectedCallback(){
-        console.log(this.constructor.name + " connected to DOM");
+        //console.log(this.constructor.name + " connected to DOM");
         this.cloneTemplate(this.constructor.name);
-    }
-    disconnectedCallback() {
-        console.log(this.constructor.name + " removed from DOM");
-    }
-    adoptedCallback() {
-        console.log(this.constructor.name + " moved from DOM");
-    }
-    attributeChangedCallback(name, oldValue, newValue) {
-        console.log(`Attribute ${name} has changed from ${oldValue} to ${newValue}`);
     }
 }
