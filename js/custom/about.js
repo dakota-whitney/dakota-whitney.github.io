@@ -1,9 +1,9 @@
-import { CustomTemplate, Card, customTag, customPrefix } from "./custom.js";
-import config from "./config.json" assert {type: 'json'};
+import { CustomTemplate, Card, customTag, customPrefix, gId } from "./custom.js";
+//import config from "./config.json" assert {type: 'json'};
 
 async function gFetch(pageId, query = {}){
   const gURL = new URL("https://script.google.com");
-  gURL.pathname = `macros/s/${config.gId}/exec`;
+  gURL.pathname = `macros/s/${gId}/exec`;
   gURL.search = new URLSearchParams({page: pageId, ...query});
   
   const gRes = await fetch(gURL);
