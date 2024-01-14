@@ -139,10 +139,16 @@ repo-tab {
 }
 
 code {
-  width: 400px;
+  width: 200px;
   height: 850px;
   text-align: left;
   overflow: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+code::-webkit-scrollbar {
+  display: none;
 }
 
 #resume {
@@ -154,7 +160,7 @@ code {
   text-decoration: underline;
 }
 
-@keyframes fadeIn {
+/* @keyframes fadeIn {
   0% {
     transform: translateX(-300px);
     opacity: 0%;
@@ -162,6 +168,12 @@ code {
   100% {
     transform: translateX(0px);
     opacity: 100%;
+  }
+} */
+
+@media (min-width: 768px) {
+  code {
+    width: 500px;
   }
 }
 
