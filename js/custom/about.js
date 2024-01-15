@@ -1,5 +1,5 @@
 import { CustomTemplate, Card, customTag, customPrefix } from "./custom.js";
-import { gId } from "./config.js";
+import { isMobile, gId } from "./config.js";
 
 async function gFetch(pageId, query = {}){
   const gURL = new URL("https://script.google.com");
@@ -25,7 +25,7 @@ export class AboutPage extends CustomTemplate {
         if(vURL == url) return popup.focus();
         this._yt = {
             url: vURL,
-            popup: open(vURL, "youtubePopup", "width=600,height=500")
+            popup: open(vURL, isMobile ? "_blank" : "youtubePopup", "width=600,height=500")
         };
     }
     constructor(){

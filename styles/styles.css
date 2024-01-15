@@ -92,8 +92,8 @@ main {
   overflow: scroll;
 }
 
-.carousel-item.active {
-  display: flex;
+#contact-page {
+  padding-top: 50%;
 }
 
 .carousel-inner {
@@ -183,6 +183,10 @@ code::-webkit-scrollbar {
 } */
 
 @media (min-width: 768px) {
+  #contact-page {
+    padding-top: 25%;
+  }
+
   code {
     width: 500px;
   }
@@ -242,5 +246,9 @@ code::-webkit-scrollbar {
   #resume {
     height: 700px;
     width: 65%;
+  }
+
+  #contact-page {
+    padding-top: initial;
   }
 }
