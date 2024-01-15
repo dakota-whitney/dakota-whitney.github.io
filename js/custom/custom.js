@@ -25,5 +25,4 @@ export class Card extends CustomTemplate {
 customElements.define(CustomTemplate.tag, CustomTemplate);
 customElements.define(Card.tag, Card);
 
-const gId = "AKfycbzUyFe8onukYL1WvcJFyBlH89Qqm13gQnVVtU347pKs-4EADOrlvg1g1QgM3GTNChAz2g";
-export {gId, customTag, customPrefix};
+export {customTag, customPrefix};

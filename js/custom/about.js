@@ -1,5 +1,5 @@
-import { CustomTemplate, Card, customTag, customPrefix, gId } from "./custom.js";
-//import config from "./config.json" assert {type: 'json'};
+import { CustomTemplate, Card, customTag, customPrefix } from "./custom.js";
+import { gId } from "./config.js";
 
 async function gFetch(pageId, query = {}){
   const gURL = new URL("https://script.google.com");
@@ -12,6 +12,22 @@ async function gFetch(pageId, query = {}){
 
 export class AboutPage extends CustomTemplate {
     static prefix = customPrefix(this.name);
+    static _yt = {
+        url: "",
+        popup: null
+    }
+    static get yt(){
+        return this._yt;
+    }
+    static set yt(vURL){
+        const {url, popup} = this._yt;
+
+        if(vURL == url) return popup.focus();
+        this._yt = {
+            url: vURL,
+            popup: open(vURL, "youtubePopup", "width=600,height=500")
+        };
+    }
     constructor(){
         super();
         this._likes = [];
@@ -48,17 +64,33 @@ class LikeCard extends Card {
         ["artist", ".card-subtitle"],
         ["thumbnail", ".card-img-top"]
     ])
+    static base = "https://youtube.com/watch?"
     constructor(){
         super();
     }
     connectedCallback(){
         console.log(this.constructor.name + " connected to DOM");
         this.cloneTemplate(this._prefix);
+        const {meta, base} = LikeCard;
+
+        const vURL = new URL(base);
+        vURL.search = new URLSearchParams({v: this.id});
+
+        const vLink = document.createElement("a");
+        vLink.href = vURL;
+        vLink.target = "youtubePopup";
+        vLink.onclick = () => AboutPage.yt = vURL;
   
-        for(const [dataId, cardClass] of LikeCard.meta){
+        for(const [dataId, cardClass] of meta){
             const cardMeta = this.querySelector(cardClass);
-            if(dataId == "thumbnail") cardMeta.src = this.data[dataId];
+
+            if(dataId == "thumbnail"){
+                cardMeta.src = this.data[dataId];
+                vLink.append(cardMeta.cloneNode(false));
+                cardMeta.replaceWith(vLink);
+            }
             else cardMeta.innerText = this.data[dataId];
+
             cardMeta.id = this.id + "-" + dataId;
         };
     }

@@ -1,5 +1,5 @@
 import { Octokit } from "https://esm.sh/octokit";
-import { CustomTemplate, customTag, customPrefix } from "./custom.js";
+import { CustomTemplate, customTag } from "./custom.js";
 
 export class ProjectsPage extends CustomTemplate {
     static gh = new Octokit({}).rest
@@ -37,7 +37,9 @@ export class ProjectsPage extends CustomTemplate {
         const query = {...ghQuery, repo: repo}
 
         let {data: {tree}} = await gh.git.getTree({...query, tree_sha: branch, recursive: "true"});
-        tree = tree.filter(({type, path}) => type == "blob" && path.match(/\.html|css|js$/)).map(({path}) => path);
+        tree = tree
+            .filter(({type, path}) => type == "blob" && path.match(/\.html|css|js$/) && !path.match(/config/))
+            .map(({path}) => path);
 
         const codeMap = new Map()
         for(const file of tree){
