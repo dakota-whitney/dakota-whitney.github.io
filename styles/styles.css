@@ -210,6 +210,9 @@ code::-webkit-scrollbar {
     justify-content: initial;
     overflow: scroll;
   }
+  #projects-page {
+    padding-top: 50px;
+  }
 
   #project-links,
   #credential-links {
@@ -236,7 +239,7 @@ code::-webkit-scrollbar {
   }
 
   #resume-page {
-    padding-top: 10px;
+    padding-top: 75px;
   }
 
   #resume {
