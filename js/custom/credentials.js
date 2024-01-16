@@ -5,7 +5,7 @@ export class CredentialsPage extends CustomTemplate {
         super();
     }
     connectedCallback(){
-        //console.log(this.constructor.name + " connected to DOM");
+        console.log(this.constructor.name + " connected to DOM");
         this.cloneTemplate(this.constructor.name);
     }
 }
