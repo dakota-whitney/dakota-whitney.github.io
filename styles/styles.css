@@ -107,6 +107,9 @@ main {
 like-card {
   height: 275px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .display-1 {
