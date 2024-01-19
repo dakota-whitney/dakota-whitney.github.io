@@ -1,6 +1,7 @@
 import { CustomTemplate, Card, customTag, customPrefix } from "./custom.js";
-import { gId } from "./config.js";
+import { gId } from "./config.js"; //Import Google Apps Script public endpoint ID from local config.js file
 
+//Query my public Apps Script endpoint!
 async function gFetch(pageId, query = {}){
   const gURL = new URL(`macros/s/${gId}/exec`, "https://script.google.com");
   gURL.search = new URLSearchParams({page: pageId, ...query});
