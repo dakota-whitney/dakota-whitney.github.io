@@ -1,5 +1,5 @@
 import { CustomTemplate, Card, customTag, customPrefix } from "./custom.js";
-import { isMobile, gId } from "./config.js";
+import { gId } from "./config.js";
 
 async function gFetch(pageId, query = {}){
   const gURL = new URL(`macros/s/${gId}/exec`, "https://script.google.com");
