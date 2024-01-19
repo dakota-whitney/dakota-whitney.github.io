@@ -11,16 +11,13 @@ async function gFetch(pageId, query = {}){
 
 export class AboutPage extends CustomTemplate {
     static prefix = customPrefix(this.name);
-    constructor(){
-        super();
-        this._likes = [];
-        customElements.define(LikeCard.tag, LikeCard);
-    };
-    get likes(){
+    static tag = customTag(this.name);
+    static _likes = [];
+    static get likes(){
         return this._likes;
     };
-    set likes(snippets){
-        const likeGroup = this.querySelector(".card-group");
+    static set likes(snippets){
+        const likeGroup = document.getElementById(this.tag).querySelector(".card-group");
         this._likes = snippets.map(snippet => {
             let likeCard = document.createElement(LikeCard.tag, {is: LikeCard.tag});
             likeCard = likeGroup.appendChild(likeCard);
@@ -28,16 +25,24 @@ export class AboutPage extends CustomTemplate {
             return likeCard;
         });
     };
+    static stopCurrent(){
+        const playing = this.likes.find(card => card.player && card.player.getPlayerState() == 1);
+        if(playing) playing.togglePlayer();
+    };
+    constructor(){
+        super();
+        customElements.define(LikeCard.tag, LikeCard);
+    };
     connectedCallback(){
-        console.log(this.constructor.name + " connected to DOM");
-        this.cloneTemplate(this.constructor.name);
+        const {name: pageName} = this.constructor;
+        console.log(pageName + " connected to DOM");
+        this.cloneTemplate(pageName);
         this.fetchLikes(10);
     };
     async fetchLikes(n){
         const {prefix} = AboutPage;
-        this.likes = await gFetch(prefix, {size: n});
-        console.log(this.likes);
-        return this.likes;
+        AboutPage.likes = await gFetch(prefix, {size: n});
+        return AboutPage.likes;
     };
 };
 
@@ -48,18 +53,35 @@ class LikeCard extends Card {
         ["artist", ".card-subtitle"],
         ["thumbnail", ".card-img-top"]
     ])
-    static size = {
+    static player = {
         height: "175",
-        width: "300"
+        width: "300",
+        playerVars: {
+            "enablejsapi": 1,
+            "origin": location.origin,
+            "playsinline": 1
+        },
+        events: {
+            "onReady": e => {
+                AboutPage.stopCurrent();
+                e.target.playVideo();
+            },
+        }
     }
     constructor(){
         super();
-        this.card = "";
-        this.player = null;
+        this.card = this._prefix;
+        this._player = null;
+    }
+    get player(){
+        return this._player;
+    }
+    set player(vId){
+        this._player = new YT.Player(vId, {videoId: vId, ...LikeCard.player});
     }
     connectedCallback(){
         console.log(this.constructor.name + " connected to DOM");
-        this.cloneTemplate(this._prefix);
+        this.cloneTemplate(this.card);
     }
     get data(){
         return this.dataset;
@@ -83,29 +105,17 @@ class LikeCard extends Card {
     }
     togglePlayer(){
         if(!yt) return;
+
         const [{id: vId}] = this.children;
         console.log(vId);
 
         if(!this.player){
             this.card = this.innerHTML;
-            this.player = new YT.Player(vId, {
-                ...LikeCard.size,
-                videoId: vId,
-                playerVars: {
-                    "enablejsapi": 1,
-                    "origin": location.origin,
-                    "playsinline": 1
-                },
-                events: {
-                    "onReady": e => e.target.playVideo()
-                }
-            })
-        }
-        else this.reset();
-    }
-    reset(){
-        this.player = null;
-        this.innerHTML = this.card;
+            this.player = vId;
+        } else {
+            this._player = null;
+            this.innerHTML = this.card;
+        };
     }
 };
 
