@@ -26,7 +26,7 @@ export class AboutPage extends CustomTemplate {
         });
     };
     static stopCurrent(){
-        const playing = this.likes.find(card => card.player && card.player.getPlayerState() == 1);
+        const playing = this.likes.find(card => card.player);
         if(playing) playing.togglePlayer();
     };
     constructor(){
