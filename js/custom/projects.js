@@ -46,7 +46,7 @@ export class ProjectsPage extends CustomTemplate {
             const {data: {content}} = await gh.repos.getContent({...query, path: file});
             codeMap.set(file, atob(content));
         };
-        console.log(codeMap);
+
         this.repos = [repo, codeMap];
         this.showCode(repo, tree[0]);
         return codeMap;

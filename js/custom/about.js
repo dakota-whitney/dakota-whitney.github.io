@@ -2,8 +2,7 @@ import { CustomTemplate, Card, customTag, customPrefix } from "./custom.js";
 import { isMobile, gId } from "./config.js";
 
 async function gFetch(pageId, query = {}){
-  const gURL = new URL("https://script.google.com");
-  gURL.pathname = `macros/s/${gId}/exec`;
+  const gURL = new URL(`macros/s/${gId}/exec`, "https://script.google.com");
   gURL.search = new URLSearchParams({page: pageId, ...query});
   
   const gRes = await fetch(gURL);
@@ -12,22 +11,6 @@ async function gFetch(pageId, query = {}){
 
 export class AboutPage extends CustomTemplate {
     static prefix = customPrefix(this.name);
-    static _yt = {
-        url: "",
-        popup: null
-    }
-    static get yt(){
-        return this._yt;
-    }
-    static set yt(vURL){
-        const {url, popup} = this._yt;
-
-        if(vURL == url) return popup.focus();
-        this._yt = {
-            url: vURL,
-            popup: open(vURL, isMobile ? "_blank" : "youtubePopup", "width=600,height=500")
-        };
-    }
     constructor(){
         super();
         this._likes = [];
@@ -39,9 +22,10 @@ export class AboutPage extends CustomTemplate {
     set likes(snippets){
         const likeGroup = this.querySelector(".card-group");
         this._likes = snippets.map(snippet => {
-            const likeCard = document.createElement(LikeCard.tag, {is: LikeCard.tag});
+            let likeCard = document.createElement(LikeCard.tag, {is: LikeCard.tag});
+            likeCard = likeGroup.appendChild(likeCard);
             likeCard.data = snippet;
-            return likeGroup.appendChild(likeCard);
+            return likeCard;
         });
     };
     connectedCallback(){
@@ -64,49 +48,65 @@ class LikeCard extends Card {
         ["artist", ".card-subtitle"],
         ["thumbnail", ".card-img-top"]
     ])
-    static base = "https://youtube.com/watch?"
+    static size = {
+        height: "175",
+        width: "300"
+    }
     constructor(){
         super();
+        this.card = "";
+        this.player = null;
     }
     connectedCallback(){
         console.log(this.constructor.name + " connected to DOM");
         this.cloneTemplate(this._prefix);
-        const {meta, base} = LikeCard;
-
-        const vURL = new URL(base);
-        vURL.search = new URLSearchParams({v: this.id});
-
-        const vLink = document.createElement("a");
-        vLink.href = vURL;
-        vLink.target = "youtubePopup";
-        vLink.onclick = () => AboutPage.yt = vURL;
-  
-        for(const [dataId, cardClass] of meta){
-            const cardMeta = this.querySelector(cardClass);
-
-            if(dataId == "thumbnail"){
-                cardMeta.src = this.data[dataId];
-                vLink.append(cardMeta.cloneNode(false));
-                cardMeta.replaceWith(vLink);
-            }
-            else cardMeta.innerText = this.data[dataId];
-
-            cardMeta.id = this.id + "-" + dataId;
-        };
     }
     get data(){
         return this.dataset;
     }
     set data(snippet){
-        this.id = snippet.resourceId.videoId;
-        delete snippet.resourceId;
+        console.log(snippet);
+        this.children[0].id = snippet.videoId;
         
         snippet.thumbnail = snippet.thumbnails.medium.url;
         delete snippet.thumbnails;
-        delete snippet.description;
-  
-        for(const dataId in snippet) this.dataset[dataId] = snippet[dataId];
+
+        for(const [metaId, metaClass] of LikeCard.meta){
+            this.dataset[metaId] = snippet[metaId];
+            const metaEl = this.querySelector(metaClass);
+
+            if(metaId == "thumbnail") metaEl.src = this.dataset[metaId];
+            else metaEl.innerText = this.dataset[metaId];
+        };
+
+        this.onclick = () => this.togglePlayer();
     }
-  };
+    togglePlayer(){
+        if(!yt) return;
+        const [{id: vId}] = this.children;
+        console.log(vId);
+
+        if(!this.player){
+            this.card = this.innerHTML;
+            this.player = new YT.Player(vId, {
+                ...LikeCard.size,
+                videoId: vId,
+                playerVars: {
+                    "enablejsapi": 1,
+                    "origin": location.origin,
+                    "playsinline": 1
+                },
+                events: {
+                    "onReady": e => e.target.playVideo()
+                }
+            })
+        }
+        else this.reset();
+    }
+    reset(){
+        this.player = null;
+        this.innerHTML = this.card;
+    }
+};
 
 export {gFetch}

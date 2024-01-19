@@ -94,7 +94,7 @@
         Feel free to take a look around.
         But before you do, check out the playlist I listened to while coding this site:
       </p>
-      <div class="card-group"></div>
+      <div id="likes" class="card-group"></div>
     </div>
   </template>
 
@@ -192,10 +192,7 @@
   <template id="resume-template">
     <div class="container">
       <h1 class="display-1">Resume</h2>
-      <iframe 
-        id="resume"
-        src="https://docs.google.com/document/d/e/2PACX-1vTVRmE5XDttuSUYlYmble71eRbyS3Ww7UohVpotmvW1TGh3ySFi370_ekOTBmBqc_6wjemq8k6GvzwI/pub?embedded=true">
-      </iframe>
+      <iframe id="resume"></iframe>
     </div>
   </template>
 
@@ -216,5 +213,19 @@
   </script>
   
   <script src="./js/pages.js" type="module"></script>
+
+  <script>
+    //Load the IFrame Player API code asynchronously.
+    const ytTag = document.createElement("script");
+    ytTag.src = new URL("iframe_api", "https://www.youtube.com/");
+    const [ firstScriptTag ] = document.getElementsByTagName("script");
+    firstScriptTag.parentNode.insertBefore(ytTag, firstScriptTag);
+
+    let yt = false;
+    function onYouTubeIframeAPIReady(){
+      console.log("YouTube iFrame API Loaded");
+      yt = true;
+    }
+  </script>
 </body>
 </html>

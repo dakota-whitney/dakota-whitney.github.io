@@ -1,2 +1,3 @@
 export const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-export const gId = "AKfycbzUyFe8onukYL1WvcJFyBlH89Qqm13gQnVVtU347pKs-4EADOrlvg1g1QgM3GTNChAz2g";
+export const gId = "AKfycbzzNlPOQJ6iisopPKcqapzLt9eJAXhTn0cCTLT5kI6rpw10H4a_ZLxgwc3IACGZHg5mag";
+export const rId = "2PACX-1vTVRmE5XDttuSUYlYmble71eRbyS3Ww7UohVpotmvW1TGh3ySFi370_ekOTBmBqc_6wjemq8k6GvzwI";
