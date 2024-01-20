@@ -95,14 +95,15 @@ class LikeCard extends Card {
         delete snippet.thumbnails;
 
         for(const [metaId, metaClass] of LikeCard.meta){
-            this.dataset[metaId] = snippet[metaId];
             const metaEl = this.querySelector(metaClass);
 
             if(metaId == "thumbnail"){
-                metaEl.src = this.dataset[metaId];
+                metaEl.src = snippet[metaId];
                 metaEl.alt = snippet.description;
-            }
-            else metaEl.innerText = this.dataset[metaId];
+            } else {
+                this.dataset[metaId] = snippet[metaId];
+                metaEl.innerText = snippet[metaId];
+            };
         };
 
         this.onclick = () => this.togglePlayer();
