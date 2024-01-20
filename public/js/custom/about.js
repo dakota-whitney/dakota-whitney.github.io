@@ -42,7 +42,7 @@ export class AboutPage extends CustomTemplate {
     };
     async fetchLikes(n){
         const {prefix} = AboutPage;
-        AboutPage.likes = await gFetch(prefix, {size: n});
+        AboutPage.likes = await gFetch(prefix, {size: n, meta: "description"});
         return AboutPage.likes;
     };
 };
@@ -52,7 +52,7 @@ class LikeCard extends Card {
     static meta = new Map([
         ["title", ".card-title"],
         ["artist", ".card-subtitle"],
-        ["thumbnail", ".card-img-top"]
+        ["thumbnail", ".card-img-top"],
     ])
     static player = {
         height: "175",
@@ -98,7 +98,10 @@ class LikeCard extends Card {
             this.dataset[metaId] = snippet[metaId];
             const metaEl = this.querySelector(metaClass);
 
-            if(metaId == "thumbnail") metaEl.src = this.dataset[metaId];
+            if(metaId == "thumbnail"){
+                metaEl.src = this.dataset[metaId];
+                metaEl.alt = snippet.description;
+            }
             else metaEl.innerText = this.dataset[metaId];
         };
 
