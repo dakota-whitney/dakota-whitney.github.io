@@ -38,7 +38,7 @@ export class ProjectsPage extends CustomTemplate {
 
         let {data: {tree}} = await gh.git.getTree({...query, tree_sha: branch, recursive: "true"});
         tree = tree
-            .filter(({type, path}) => type == "blob" && path.match(/\.html|css|js$/) && !path.match(/config/))
+            .filter(({type, path}) => type == "blob" && path.match(/\.html|css|js$/) && !path.match(/config|\.json/))
             .map(({path}) => path);
 
         const codeMap = new Map()

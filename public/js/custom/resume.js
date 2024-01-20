@@ -1,5 +1,5 @@
 import { CustomTemplate, customPrefix } from "./custom.js";
-import { rId } from "./config.js";
+import { rId } from "../../../src/config.js";
 
 export class ResumePage extends CustomTemplate {
     static prefix = customPrefix(this.name);

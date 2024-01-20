@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Dakota's Portfolio</title>
-  <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="public/img/favicon/favicon.ico">
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,7 +31,7 @@
   <link
     rel="stylesheet"
     type="text/css"
-    href="/styles/styles.css">
+    href="public/styles/styles.css">
 </head>
 <body>
   <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
@@ -94,7 +94,7 @@
         Feel free to take a look around.
         But before you do, check out the my most recently liked songs I listened to while coding this site:
       </p>
-      <div id="likes" class="card-group"></div>
+      <div class="card-group"></div>
     </div>
   </template>
 
@@ -117,19 +117,19 @@
           <img
             id="github-img"
             class="project-img"
-            src="./img/octocat.png"
+            src="public/img/octocat.png"
             alt="Github badge">
         </a>
         <a href="https://codesandbox.io/u/dakota-whitney" target="_blank">
           <img
             class="project-img rounded"
-            src="./img/codesandbox-logo.png"
+            src="public/img/codesandbox.png"
             alt="Codesandbox logo">
         </a>
         <a href="https://codepen.io/dakota-whitney" target="_blank">
           <img 
             class="project-img"
-            src="./img/codepen-logo.png"
+            src="public/img/codepen.png"
             alt="Codepen Logo">
         </a>
       </div>
@@ -161,7 +161,7 @@
           target="_blank">
 
           <img
-            src="./img/sps_badge.png"
+            src="public/img/sps.png"
             class="credential-img" 
             alt="SPS Profile">
         </a>
@@ -171,7 +171,7 @@
           target="_blank">
           
           <img
-            src="./img/codecademy-logo.png"
+            src="public/img/codecademy.png"
             class="credential-img rounded"
             alt="Codecademy Profile">
         </a>
@@ -182,7 +182,7 @@
           
           <img 
             class="credential-img"
-            src="./img/fcc-logo.png"
+            src="public/img/fcc.png"
             alt="FCC Profile">
         </a>
       </div>
@@ -212,13 +212,13 @@
     crossorigin="anonymous">
   </script>
   
-  <script src="./js/pages.js" type="module"></script>
+  <script src="public/js/pages.js" type="module"></script>
 
   <script>
     //Load the IFrame Player API code asynchronously.
     const ytTag = document.createElement("script");
     ytTag.src = new URL("iframe_api", "https://www.youtube.com/");
-    const [ firstScriptTag ] = document.getElementsByTagName("script");
+    const [firstScriptTag] = document.getElementsByTagName("script");
     firstScriptTag.parentNode.insertBefore(ytTag, firstScriptTag);
 
     let yt = false;
