@@ -15,6 +15,5 @@ export class ResumePage extends CustomTemplate {
         const rURL = new URL(base.href);
         rURL.search = new URLSearchParams({embedded: true});
         this.querySelector("#resume").src = rURL;
-        this.querySelector(".spinner-border").remove();
     }
 }
