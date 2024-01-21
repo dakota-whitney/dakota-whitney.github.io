@@ -23,6 +23,7 @@ export class AboutPage extends CustomTemplate {
     static stopCurrent(){
         const playing = this.likes.find(card => card.player && card.player.getPlayerState() == 1);
         if(playing) playing.togglePlayer();
+        return playing;
     };
     constructor(){
         super();
@@ -111,18 +112,17 @@ class LikeCard extends Card {
         this.loaded();
     }
     togglePlayer(){
-        if(!yt) return;
-
-        const [{id: vId}] = this.children;
-        console.log(vId);
+        if(!yt) return yt;
 
         if(!this.player){
             this.card = this.innerHTML;
-            this.player = vId;
+            this.player = this.children[0].id;
         } else {
             this._player = null;
             this.innerHTML = this.card;
         };
+
+        return true;
     }
 };
 
