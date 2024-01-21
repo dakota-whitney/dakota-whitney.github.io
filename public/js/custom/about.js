@@ -13,21 +13,16 @@ async function gFetch(pageId, query = {}){
 export class AboutPage extends CustomTemplate {
     static prefix = customPrefix(this.name);
     static tag = customTag(this.name);
-    static _likes = [];
-    static get likes(){
-        return this._likes;
-    };
-    static set likes(likeCard){
-        this._likes.push(likeCard);
-    }
-    static stopCurrent(){
-        const playing = this.likes.find(card => card.player && card.player.getPlayerState() == 1);
-        if(playing) playing.togglePlayer();
-        return playing;
-    };
     constructor(){
         super();
+        this._likes = [];
         customElements.define(LikeCard.tag, LikeCard);
+    };
+    get likes(){
+        return this._likes;
+    };
+    set likes(likeCard){
+        this._likes.push(likeCard);
     };
     connectedCallback(){
         const {name: pageName} = this.constructor;
@@ -41,11 +36,16 @@ export class AboutPage extends CustomTemplate {
 
         for(let i = 0; i < n; i++) {
             const likeCard = document.createElement(LikeCard.tag, {is: LikeCard.tag});
-            AboutPage.likes = likeGroup.appendChild(likeCard);
+            this.likes = likeGroup.appendChild(likeCard);
         };
 
         return gFetch(prefix, {size: n, meta: "description"})
-        .then(snippets => snippets.forEach((snippet, i) => AboutPage.likes[i].data = snippet));
+        .then(snippets => snippets.forEach((snippet, i) => this.likes[i].data = snippet));
+    };
+    stopCurrent(){
+        const playing = this.likes.find(card => card.player && card.player.getPlayerState() == 1);
+        if(playing) playing.togglePlayer();
+        return playing;
     };
 };
 
@@ -66,7 +66,7 @@ class LikeCard extends Card {
         },
         events: {
             "onReady": e => {
-                AboutPage.stopCurrent();
+                document.querySelector(AboutPage.tag).stopCurrent();
                 e.target.playVideo();
             },
         }
