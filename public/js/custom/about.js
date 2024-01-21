@@ -54,7 +54,7 @@ class LikeCard extends Card {
     static meta = new Map([
         ["title", ".card-title"],
         ["artist", ".card-subtitle"],
-        ["thumbnail", ".card-img-top"],
+        ["thumbnails", ".card-img-top"],
     ])
     static player = {
         height: "175",
@@ -92,19 +92,16 @@ class LikeCard extends Card {
     set data(snippet){
         console.log(snippet);
         this.children[0].id = snippet.videoId;
-        
-        snippet.thumbnail = snippet.thumbnails.medium.url;
-        delete snippet.thumbnails;
 
         for(const [metaId, metaClass] of LikeCard.meta){
             const metaEl = this.querySelector(metaClass);
 
-            if(metaId == "thumbnail"){
-                metaEl.src = snippet[metaId];
+            if(metaId == "thumbnails"){
+                metaEl.src = snippet[metaId].medium.url;
                 metaEl.alt = snippet.description;
             } else {
-                this.dataset[metaId] = snippet[metaId];
                 metaEl.innerText = snippet[metaId];
+                this.dataset[metaId] = snippet[metaId];
             };
         };
 
