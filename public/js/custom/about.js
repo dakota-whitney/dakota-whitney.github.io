@@ -17,15 +17,9 @@ export class AboutPage extends CustomTemplate {
     static get likes(){
         return this._likes;
     };
-    static set likes(snippets){
-        const likeGroup = document.getElementById(this.tag).querySelector(".card-group");
-        this._likes = snippets.map(snippet => {
-            let likeCard = document.createElement(LikeCard.tag, {is: LikeCard.tag});
-            likeCard = likeGroup.appendChild(likeCard);
-            likeCard.data = snippet;
-            return likeCard;
-        });
-    };
+    static set likes(likeCard){
+        this._likes.push(likeCard);
+    }
     static stopCurrent(){
         const playing = this.likes.find(card => card.player && card.player.getPlayerState() == 1);
         if(playing) playing.togglePlayer();
@@ -42,8 +36,15 @@ export class AboutPage extends CustomTemplate {
     };
     async fetchLikes(n){
         const {prefix} = AboutPage;
-        AboutPage.likes = await gFetch(prefix, {size: n, meta: "description"});
-        return AboutPage.likes;
+        const likeGroup = this.querySelector(".card-group");
+
+        for(let i = 0; i < n; i++) {
+            const likeCard = document.createElement(LikeCard.tag, {is: LikeCard.tag});
+            AboutPage.likes = likeGroup.appendChild(likeCard);
+        };
+
+        return gFetch(prefix, {size: n, meta: "description"})
+        .then(snippets => snippets.forEach((snippet, i) => AboutPage.likes[i].data = snippet));
     };
 };
 
@@ -107,6 +108,7 @@ class LikeCard extends Card {
         };
 
         this.onclick = () => this.togglePlayer();
+        this.loaded();
     }
     togglePlayer(){
         if(!yt) return;

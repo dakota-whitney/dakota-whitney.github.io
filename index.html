@@ -99,11 +99,14 @@
   </template>
 
   <template id="card-template">
-    <div class="card" style="width: 18rem;">
-      <img src="..." class="card-img-top" alt="...">
+    <div class="card d-flex justify-content-center align-items-center" style="width: 18rem;">
+      <div class="spinner-border text-secondary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <img class="card-img-top d-none">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+        <h5 class="card-title"></h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary"></h6>
       </div>
     </div>
   </template>
@@ -118,13 +121,13 @@
             id="github-img"
             class="project-img"
             src="public/img/octocat.png"
-            alt="Github badge">
+            alt="GitHub Octocat">
         </a>
         <a href="https://codesandbox.io/u/dakota-whitney" target="_blank">
           <img
             class="project-img rounded"
             src="public/img/codesandbox.png"
-            alt="Codesandbox logo">
+            alt="Codesandbox Logo">
         </a>
         <a href="https://codepen.io/dakota-whitney" target="_blank">
           <img 
@@ -163,7 +166,7 @@
           <img
             src="public/img/sps.png"
             class="credential-img" 
-            alt="SPS Profile">
+            alt="NYU SPS Profile">
         </a>
         <a
           class="credential" 
@@ -183,7 +186,7 @@
           <img 
             class="credential-img"
             src="public/img/fcc.png"
-            alt="FCC Profile">
+            alt="freeCodeCamp Profile">
         </a>
       </div>
     </div>
@@ -218,6 +221,7 @@
     //Load the IFrame Player API code asynchronously.
     const ytTag = document.createElement("script");
     ytTag.src = new URL("iframe_api", "https://www.youtube.com/");
+
     const [firstScriptTag] = document.getElementsByTagName("script");
     firstScriptTag.parentNode.insertBefore(ytTag, firstScriptTag);
 
@@ -225,7 +229,7 @@
     function onYouTubeIframeAPIReady(){
       console.log("YouTube iFrame API Loaded");
       yt = true;
-    }
+    };
   </script>
 </body>
 </html>
