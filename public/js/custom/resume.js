@@ -9,11 +9,12 @@ export class ResumePage extends CustomTemplate {
     }
     connectedCallback(){
         console.log(this.constructor.name + " connected to DOM");
-        const {base, prefix} = ResumePage;
+        const {base} = ResumePage;
         this.cloneTemplate(this.constructor.name);
         
         const rURL = new URL(base.href);
         rURL.search = new URLSearchParams({embedded: true});
         this.querySelector("#resume").src = rURL;
+        this.querySelector(".spinner-border").remove();
     }
 }

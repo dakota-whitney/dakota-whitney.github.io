@@ -112,6 +112,10 @@ like-card {
   align-items: center;
 }
 
+.card .spinner-border {
+  margin: 25%;
+}
+
 .display-1 {
   font-family: 'The Nautigal', cursive;
 }
