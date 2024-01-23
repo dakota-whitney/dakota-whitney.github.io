@@ -1,5 +1,5 @@
 import { CustomTemplate } from "./custom.js";
-import { cId } from "../../../src/config.js";
+import { cId, isMobile } from "../../../src/config.js";
 
 export class CredentialsPage extends CustomTemplate {
     static base = new URL("https://drive.google.com");
@@ -11,6 +11,7 @@ export class CredentialsPage extends CustomTemplate {
     connectedCallback(){
         console.log(this.constructor.name + " connected to DOM");
         this.cloneTemplate(this.constructor.name);
-        const fsWeb = this.querySelector("#fs-web").src = this.cURL;
+        const fsWeb = this.querySelector("#fs-web")
+        fsWeb.src = this.cURL;
     }
 }
