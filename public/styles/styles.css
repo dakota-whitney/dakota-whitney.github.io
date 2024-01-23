@@ -194,6 +194,7 @@ code::-webkit-scrollbar {
   }
 
   #fs-web {
+    height: 400px;
     width: 700px;
   }
 
