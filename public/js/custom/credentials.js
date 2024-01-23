@@ -13,6 +13,5 @@ export class CredentialsPage extends CustomTemplate {
         this.cloneTemplate(this.constructor.name);
         const fsWeb = this.querySelector("#fs-web")
         fsWeb.src = this.cURL;
-        if(!isMobile) fsWeb.width = "700";
     }
 }

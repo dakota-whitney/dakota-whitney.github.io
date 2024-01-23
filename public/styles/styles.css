@@ -193,6 +193,10 @@ code::-webkit-scrollbar {
     padding-top: 25px;
   }
 
+  #fs-web {
+    width: 700px;
+  }
+
   code {
     width: 500px;
   }
