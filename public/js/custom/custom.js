@@ -29,4 +29,4 @@ export class Card extends CustomTemplate {
 customElements.define(CustomTemplate.tag, CustomTemplate);
 customElements.define(Card.tag, Card);
 
-export {customTag, customPrefix};
+export { customTag, customPrefix };

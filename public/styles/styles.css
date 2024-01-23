@@ -187,6 +187,12 @@ code::-webkit-scrollbar {
 } */
 
 @media (min-width: 768px) {
+  #projects-page,
+  #resume-page,
+  #credentials-page {
+    padding-top: 25px;
+  }
+
   code {
     width: 500px;
   }
@@ -217,9 +223,6 @@ code::-webkit-scrollbar {
     flex-flow: row;
     justify-content: initial;
     overflow: scroll;
-  }
-  #projects-page {
-    padding-top: 50px;
   }
 
   #project-links,

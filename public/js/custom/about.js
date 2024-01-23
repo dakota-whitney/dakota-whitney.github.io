@@ -27,6 +27,7 @@ export class AboutPage extends CustomTemplate {
     connectedCallback(){
         const {name: pageName} = this.constructor;
         console.log(pageName + " connected to DOM");
+
         this.cloneTemplate(pageName);
         this.fetchLikes(10);
     };
@@ -55,7 +56,7 @@ class LikeCard extends Card {
         ["title", ".card-title"],
         ["artist", ".card-subtitle"],
         ["thumbnails", ".card-img-top"],
-    ])
+    ]);
     static player = {
         height: "175",
         width: "300",
@@ -70,25 +71,25 @@ class LikeCard extends Card {
                 e.target.playVideo();
             },
         }
-    }
+    };
     constructor(){
         super();
         this.card = this._prefix;
         this._player = null;
-    }
+    };
     get player(){
         return this._player;
-    }
+    };
     set player(vId){
         this._player = new YT.Player(vId, {videoId: vId, ...LikeCard.player});
-    }
+    };
     connectedCallback(){
         console.log(this.constructor.name + " connected to DOM");
         this.cloneTemplate(this.card);
-    }
+    };
     get data(){
         return this.dataset;
-    }
+    };
     set data(snippet){
         console.log(snippet);
         this.children[0].id = snippet.videoId;
@@ -107,7 +108,7 @@ class LikeCard extends Card {
 
         this.onclick = () => this.togglePlayer();
         this.loaded();
-    }
+    };
     togglePlayer(){
         if(!yt) return yt;
 
@@ -120,7 +121,7 @@ class LikeCard extends Card {
         };
 
         return true;
-    }
+    };
 };
 
-export {gFetch}
+export { gFetch };
