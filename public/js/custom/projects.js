@@ -19,11 +19,13 @@ export class ProjectsPage extends CustomTemplate {
         customElements.define(RepoTab.tag, RepoTab);
     }
     async connectedCallback(){
-        console.log(this.constructor.name + " connected to DOM");
-        this.cloneTemplate(this.constructor.name);
-        const [repo] = await this.fetchRepos(1);
-        await this.fetchCode(repo);
-        console.log(this.repos)
+        const {name} = this.constructor;
+        console.log(name + " connected to DOM");
+        this.cloneTemplate(name);
+
+        const repos = await this.fetchRepos(2);
+        await this.fetchCode(repos[1]);
+        console.log(this.repos);
     }
     async fetchRepos(n){
         const {data: repos} = await ProjectsPage.repos;
@@ -34,7 +36,7 @@ export class ProjectsPage extends CustomTemplate {
     }
     async fetchCode(repo, branch = "main"){
         const {gh, ghQuery} = ProjectsPage;
-        const query = {...ghQuery, repo: repo}
+        const query = {...ghQuery, repo: repo};
 
         let {data: {tree}} = await gh.git.getTree({...query, tree_sha: branch, recursive: "true"});
         tree = tree
@@ -88,6 +90,7 @@ class RepoTab extends CustomTemplate {
         super();
     }
     connectedCallback(){
-        this.cloneTemplate(this.constructor.name);
+        const {name} = this.constructor;
+        this.cloneTemplate(name);
     }
   };
