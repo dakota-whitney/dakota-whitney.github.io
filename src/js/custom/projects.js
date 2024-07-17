@@ -20,7 +20,6 @@ export class ProjectsPage extends CustomTemplate {
     }
     async connectedCallback(){
         const {name} = this.constructor;
-        console.log(name + " connected to DOM");
         this.cloneTemplate(name);
 
         const repos = await this.fetchRepos(3);
