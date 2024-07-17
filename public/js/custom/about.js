@@ -26,7 +26,6 @@ export class AboutPage extends CustomTemplate {
     };
     connectedCallback(){
         const {name: pageName} = this.constructor;
-        console.log(pageName + " connected to DOM");
 
         this.cloneTemplate(pageName);
         this.fetchLikes(10);
@@ -91,7 +90,6 @@ class LikeCard extends Card {
         return this.dataset;
     };
     set data(snippet){
-        console.log(snippet);
         this.children[0].id = snippet.videoId;
 
         for(const [metaId, metaClass] of LikeCard.meta){

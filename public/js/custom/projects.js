@@ -23,9 +23,9 @@ export class ProjectsPage extends CustomTemplate {
         console.log(name + " connected to DOM");
         this.cloneTemplate(name);
 
-        const [repo] = await this.fetchRepos(1);
+        const repos = await this.fetchRepos(3);
+        const repo = repos.find(name => name.includes(ProjectsPage.username));
         await this.fetchCode(repo);
-        console.log(this.repos);
     }
     async fetchRepos(n){
         const {data: repos} = await ProjectsPage.repos;
