@@ -11,8 +11,7 @@ class CustomPages extends HTMLElement {
     ["About", AboutPage],
     ["Projects", ProjectsPage],
     ["Resume", ResumePage],
-    ["Credentials", CredentialsPage],
-    ["Contact", ContactPage]
+    ["Credentials", CredentialsPage]
   ])
   static {
     const navBar = document.querySelector("ul.navbar-nav");

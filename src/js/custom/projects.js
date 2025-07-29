@@ -2,8 +2,8 @@ import { Octokit } from "https://esm.sh/octokit";
 import { CustomTemplate, customTag } from "./custom.js";
 
 export class ProjectsPage extends CustomTemplate {
-    static gh = new Octokit({}).rest
-    static username = "dakota-whitney"
+    static gh = new Octokit({}).rest;
+    static username = "dakota-whitney";
     static get repos(){
         return this.gh.repos.listForUser({username: this.username});
     }
@@ -20,37 +20,43 @@ export class ProjectsPage extends CustomTemplate {
     }
     async connectedCallback(){
         const {name} = this.constructor;
+        const {username} = ProjectsPage;
+
         this.cloneTemplate(name);
 
-        const repos = await this.fetchRepos(3);
-        const repo = repos.find(name => name.includes(ProjectsPage.username));
-        await this.fetchCode(repo);
+        const repoNames = await this.fetchRepos();
+        const thisRepo = repoNames.find(repoName => repoName.includes(username));
+        const repoFiles = await this.fetchFiles(thisRepo);
+        this.repos = [thisRepo, repoFiles]
     }
-    async fetchRepos(n){
-        const {data: repos} = await ProjectsPage.repos;
-        return repos
+    async fetchRepos(n = 0){
+        let {data: repos} = await ProjectsPage.repos;
+        repos = repos
             .sort(({updated_at: a}, {updated_at: b}) => new Date(b) - new Date(a))
             .map(({name}) => name)
-            .slice(0, n);
+        
+        return n > 0 ? repos.slice(0, n) : repos;
     }
-    async fetchCode(repo, branch = "main"){
+    async fetchFiles(repo, branch = "main"){
         const {gh, ghQuery} = ProjectsPage;
         const query = {...ghQuery, repo: repo};
 
         let {data: {tree}} = await gh.git.getTree({...query, tree_sha: branch, recursive: "true"});
+        const includeExts = /\.(html|css|js|py)$/
+        // const exclude = /config|\.json|\.gitignore|requirements.txt|README.md/;
+
         tree = tree
-            .filter(({type, path}) => type == "blob" && path.match(/\.html|css|js$/) && !path.match(/config|\.json/))
+            .filter(({type, path}) => type == "blob" && path.match(includeExts))
             .map(({path}) => path);
 
-        const codeMap = new Map()
+        const repoFiles = new Map();
+
         for(const file of tree){
             const {data: {content}} = await gh.repos.getContent({...query, path: file});
-            codeMap.set(file, atob(content));
+            repoFiles.set(file, atob(content));
         };
 
-        this.repos = [repo, codeMap];
-        this.showCode(repo, tree[0]);
-        return codeMap;
+        return repoFiles;
     }
     get repos(){
         return this._repos;
@@ -64,6 +70,7 @@ export class ProjectsPage extends CustomTemplate {
         repoTab.querySelector(".nav-link").innerText = repoTab.id;
 
         const listGroup = repoTab.querySelector(".list-group");
+
         for(const filePath of code.keys()){
             const fileItem = document.createElement("li");
             fileItem.classList.add("list-group-item");
