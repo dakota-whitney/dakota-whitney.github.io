@@ -3,7 +3,6 @@ import { AboutPage } from "./custom/about.js"
 import { ProjectsPage } from "./custom/projects.js"
 import { ResumePage } from "./custom/resume.js"
 import { CredentialsPage } from "./custom/credentials.js"
-import { ContactPage } from "./custom/contact.js"
 
 class CustomPages extends HTMLElement {
   static tag = customTag(this.name);
