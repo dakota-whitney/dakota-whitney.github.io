@@ -23,6 +23,6 @@ export class AboutPage extends CustomTemplate {
         contactIcons[i].classList.add("bi", `bi-${icon}`)
         
         const contactLinks = contactElements.querySelectorAll("a");
-        contactLinks[i].href = link
+        contactLinks[i].href = link;
     };
 };

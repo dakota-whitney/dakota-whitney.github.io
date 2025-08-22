@@ -5,7 +5,8 @@ export class ContactPage extends CustomTemplate {
         super();
     }
     connectedCallback(){
-        console.log(this.constructor.name + " connected to DOM");
-        this.cloneTemplate(this.constructor.name);
+        const {name} = this.constructor;
+        console.log(name + " connected to DOM");
+        this.cloneTemplate(name);
     }
 }

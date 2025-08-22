@@ -13,20 +13,5 @@ export class CustomTemplate extends HTMLElement {
   }
 };
 
-export class Card extends CustomTemplate {
-  static prefix = customPrefix(this.name);
-  static tag = "bs-" + this.prefix;
-  constructor(){
-      super();
-      this._prefix = Card.prefix;
-  }
-  loaded(){
-    this.querySelector(".spinner-border").remove();
-    this.querySelector("img").classList.remove("d-none");
-  }
-};
-
 customElements.define(CustomTemplate.tag, CustomTemplate);
-customElements.define(Card.tag, Card);
-
 export { customTag, customPrefix };

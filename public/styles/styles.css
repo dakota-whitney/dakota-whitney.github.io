@@ -104,14 +104,6 @@ main {
   align-items: center;
 }
 
-like-card {
-  height: 275px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .card .spinner-border {
   margin: 25%;
 }
@@ -119,6 +111,7 @@ like-card {
 .display-1 {
   font-family: 'The Nautigal', cursive;
 }
+
 .material-symbols-outlined{
   color: var(--bs-white);
 }

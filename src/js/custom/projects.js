@@ -27,7 +27,7 @@ export class ProjectsPage extends CustomTemplate {
         const repoNames = await this.fetchRepos();
         const thisRepo = repoNames.find(repoName => repoName.includes(username));
         const repoFiles = await this.fetchFiles(thisRepo);
-        this.repos = [thisRepo, repoFiles]
+        this.repos = [thisRepo, repoFiles];
     }
     async fetchRepos(n = 0){
         let {data: repos} = await ProjectsPage.repos;
@@ -43,7 +43,6 @@ export class ProjectsPage extends CustomTemplate {
 
         let {data: {tree}} = await gh.git.getTree({...query, tree_sha: branch, recursive: "true"});
         const includeExts = /\.(html|css|js|py)$/
-        // const exclude = /config|\.json|\.gitignore|requirements.txt|README.md/;
 
         tree = tree
             .filter(({type, path}) => type == "blob" && path.match(includeExts))
@@ -62,7 +61,7 @@ export class ProjectsPage extends CustomTemplate {
         return this._repos;
     }
     set repos([repo, code]){
-        const repoTabs = this.querySelector(".nav-tabs")
+        const repoTabs = this.querySelector(".nav-tabs");
         const repoTab = document.createElement(RepoTab.tag, {is: RepoTab.tag});
 
         repoTabs.append(repoTab);
@@ -88,7 +87,7 @@ export class ProjectsPage extends CustomTemplate {
             .join("</li>") + "</li>";
         repoTab.querySelector("code").innerText = this.repos.get(repo).get(filePath);
     }
-}
+};
 
 class RepoTab extends CustomTemplate {
     static tag = customTag(this.name);
