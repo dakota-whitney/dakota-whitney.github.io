@@ -27,7 +27,7 @@ class CustomPages extends HTMLElement {
       customElements.define(tag, custom);
 
       const customPage = document.createElement(tag, {is: tag});
-      customPage.id = tag;
+      // customPage.id = tag;
       customPage.classList.add("carousel-item");
       this.pages.set(page, innerRoot.appendChild(customPage));
     };

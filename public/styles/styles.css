@@ -86,7 +86,7 @@ main {
   height: 100%;
 }
 
-.carousel-item {
+.carousel-item:not(about-page) {
   padding-top: 50px;
   height: 100%;
   overflow: scroll;
@@ -110,10 +110,6 @@ main {
 
 .display-1 {
   font-family: 'The Nautigal', cursive;
-}
-
-.material-symbols-outlined{
-  color: var(--bs-white);
 }
 
 #project-links,
@@ -159,13 +155,9 @@ code::-webkit-scrollbar {
   height: 800px;
 }
 
-#contact-page {
-  margin-top: 50vh;
-  padding-top: 10vh;
-}
-
-#contact-items a {
-  text-decoration: underline;
+#fs-web {
+  height: 300px;
+  width: 300px;
 }
 
 /* @keyframes fadeIn {
@@ -180,17 +172,6 @@ code::-webkit-scrollbar {
 } */
 
 @media (min-width: 768px) {
-  #projects-page,
-  #resume-page,
-  #credentials-page {
-    padding-top: 25px;
-  }
-
-  #fs-web {
-    height: 400px;
-    width: 700px;
-  }
-
   code {
     width: 500px;
   }
@@ -221,6 +202,10 @@ code::-webkit-scrollbar {
     flex-flow: row;
     justify-content: initial;
     overflow: scroll;
+  }
+
+  #projects {
+    margin-top: 5%
   }
 
   #project-links,
@@ -256,8 +241,8 @@ code::-webkit-scrollbar {
     width: 65%;
   }
 
-  #contact-page {
-    padding-top: initial;
-    margin-top: initial;
+  #fs-web {
+    height: 600px;
+    width: 900px;
   }
 }
