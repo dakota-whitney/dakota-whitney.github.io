@@ -1,36 +1,30 @@
-import { Octokit } from "https://esm.sh/octokit";
-import { CustomTemplate, customTag } from "./custom.js";
+import { Octokit } from "https://esm.sh/@octokit/rest";
+import { Pages } from "./pages.js";
 
-export class ProjectsPage extends CustomTemplate {
-    static gh = new Octokit({}).rest;
-    static username = "dakota-whitney";
-    static get repos(){
-        return this.gh.repos.listForUser({username: this.username});
-    }
-    static ghQuery = {
-        owner: this.username,
-        headers: {
-            "X-GitHub-Api-Version": "2022-11-28"
-        }
-    }
+export class ProjectsPage extends Pages {
+    static tag = Pages.tag(this.name);
     constructor(){
         super();
+        this.gh = new Octokit({});
+        this.username = 'dakota-whitney';
+        this.query = {
+            owner: this.username,
+            headers: {'X-GitHub-Api-Version': '2022-11-28'}
+        }
         this._repos = new Map();
         customElements.define(RepoTab.tag, RepoTab);
     }
     async connectedCallback(){
-        const {name} = this.constructor;
-        const {username} = ProjectsPage;
-
-        this.cloneTemplate(name);
+        this.cloneTemplate(ProjectsPage.tag);
 
         const repoNames = await this.fetchRepos();
-        const thisRepo = repoNames.find(repoName => repoName.includes(username));
+        const thisRepo = repoNames.find(repoName => repoName.includes(this.username));
+        
         const repoFiles = await this.fetchFiles(thisRepo);
         this.repos = [thisRepo, repoFiles];
     }
     async fetchRepos(n = 0){
-        let {data: repos} = await ProjectsPage.repos;
+        let {data: repos} = await this.gh.repos.listForUser({username: this.username});
         repos = repos
             .sort(({updated_at: a}, {updated_at: b}) => new Date(b) - new Date(a))
             .map(({name}) => name)
@@ -38,12 +32,15 @@ export class ProjectsPage extends CustomTemplate {
         return n > 0 ? repos.slice(0, n) : repos;
     }
     async fetchFiles(repo, branch = "main"){
-        const {gh, ghQuery} = ProjectsPage;
-        const query = {...ghQuery, repo: repo};
+        const query = {...this.query, repo: repo};
 
-        let {data: {tree}} = await gh.git.getTree({...query, tree_sha: branch, recursive: "true"});
+        let {data: {tree}} = await this.gh.git.getTree({
+            ...query,
+            tree_sha: branch,
+            recursive: "true"
+        });
+
         const includeExts = /\.(html|css|js|py)$/
-
         tree = tree
             .filter(({type, path}) => type == "blob" && path.match(includeExts))
             .map(({path}) => path);
@@ -51,7 +48,7 @@ export class ProjectsPage extends CustomTemplate {
         const repoFiles = new Map();
 
         for(const file of tree){
-            const {data: {content}} = await gh.repos.getContent({...query, path: file});
+            const {data: {content}} = await this.gh.repos.getContent({...query, path: file});
             repoFiles.set(file, atob(content));
         };
 
@@ -89,13 +86,14 @@ export class ProjectsPage extends CustomTemplate {
     }
 };
 
-class RepoTab extends CustomTemplate {
-    static tag = customTag(this.name);
+class RepoTab extends Pages {
+    static tag = Pages.tag(this.name);
     constructor(){
         super();
     }
     connectedCallback(){
-        const {name} = this.constructor;
-        this.cloneTemplate(name);
+        this.cloneTemplate(RepoTab.tag);
     }
-  };
+};
+
+customElements.define(ProjectsPage.tag, ProjectsPage);

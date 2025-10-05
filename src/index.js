@@ -1,0 +1,9 @@
+import { NavBar } from "./custom/navbar.js";
+import { Pages } from "./custom/pages.js";
+import { AboutPage } from "./custom/about.js";
+import { ProjectsPage } from "./custom/projects.js";
+import { ResumePage } from "./custom/resume.js";
+import { CredentialsPage } from "./custom/credentials.js";
+
+const navItems = new NavBar("Projects", "Resume", "Credentials");
+new Pages(navItems, AboutPage, ProjectsPage, ResumePage, CredentialsPage);

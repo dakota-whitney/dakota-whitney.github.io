@@ -34,7 +34,7 @@ img:hover {
 .navbar-brand{
   color: var(--bs-white);
   transition: 100ms linear;
-  cursor: default;
+  cursor: pointer;
 }
 
 .navbar-brand:hover{
@@ -75,6 +75,11 @@ img:hover {
 
 #search {
   margin: 0 0 10px 0;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    position: fixed;
 }
 
 main {

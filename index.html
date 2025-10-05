@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  
   <title>Dakota's Portfolio</title>
   <link rel="icon" type="image/x-icon" href="public/img/favicon/favicon.ico">
   <meta charset="utf-8">
@@ -24,12 +25,15 @@
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
     crossorigin="anonymous">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
   <link
     rel="stylesheet"
     type="text/css"
     href="public/styles/styles.css">
+    
 </head>
 <body>
   <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
@@ -54,7 +58,7 @@
     </div>
   </nav>
   <main>
-    <div id="pages" class="carousel slide">
+    <div id="pages" class="carousel slide" data-bs-theme="dark">
       <div class="carousel-inner d-flex align-items-center align-self-center"></div>
       <button 
         class="carousel-control-prev" 
@@ -75,7 +79,7 @@
     </div>
   </main>
 
-  <template id="about-template">
+  <template id="about-page">
     <div class="container">
       <h1 class="display-1">I'm <span>Dakota.</span></h1>
       <h1 class="display-6">
@@ -93,14 +97,14 @@
     </div>
   </template>
 
-  <template id="projects-template">
+  <template id="projects-page">
     <div id="projects" class="container">
       <h1 class="display-1">Projects</h1>
       <ul class="nav nav-tabs"></ul>
     </div>
   </template>
 
-  <template id="repo-template">
+  <template id="repo-tab">
     <li class="nav-item">
       <a class="nav-link repo-name" aria-current="page" href="#"></a>
       <div class="container-fluid d-flex flex-row justify-content-center align-items-center align-self-center">
@@ -115,7 +119,7 @@
     </li>  
   </template>
 
-    <template id="resume-template">
+    <template id="resume-page">
     <div class="container">
       <h1 class="display-1">Resume</h2>
        <iframe
@@ -125,7 +129,7 @@
     </div>
   </template>
 
-  <template id="credentials-template">
+  <template id="credentials-page">
     <div class="container">
       <h1 class="display-1">Credentials</h1>
       <iframe
@@ -134,36 +138,6 @@
       >
       </iframe>
       <div id="credential-links">
-        <a
-          class="credential" 
-          href="https://basno.com/users/dakotawhitney" 
-          target="_blank">
-
-          <img
-            src="public/img/sps.png"
-            class="credential-img" 
-            alt="NYU SPS Profile">
-        </a>
-        <a
-          class="credential" 
-          href="https://www.codecademy.com/profiles/dakota-whitney" 
-          target="_blank">
-          
-          <img
-            src="public/img/codecademy.png"
-            class="credential-img rounded"
-            alt="Codecademy Profile">
-        </a>
-        <a
-          class="credential"
-          href="https://www.freecodecamp.org/dakota-whitney" 
-          target="_blank">
-          
-          <img 
-            class="credential-img"
-            src="public/img/fcc.png"
-            alt="freeCodeCamp Profile">
-        </a>
       </div>
     </div>
   </template>
@@ -174,7 +148,7 @@
     crossorigin="anonymous">
   </script>
 
-  <script src="src/js/pages.js" type="module"></script>
+  <script src="./src/index.js" type="module"></script>
 
 </body>
 </html>
