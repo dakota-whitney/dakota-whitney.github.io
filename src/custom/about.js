@@ -1,6 +1,6 @@
 import { Pages } from "./pages.js";
 
-export class AboutPage extends Pages {
+export class AboutPage extends HTMLElement {
     static tag = Pages.tag(this.name);
     constructor(){
         super();
@@ -11,7 +11,6 @@ export class AboutPage extends Pages {
         };
     };
     connectedCallback(){
-        this.cloneTemplate(AboutPage.tag);
         Object.entries(this.contactLinks).forEach(this.addContactLink, this);
     };
     addContactLink([icon, link], i){

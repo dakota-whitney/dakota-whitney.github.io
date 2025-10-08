@@ -1,6 +1,6 @@
 import { Pages } from "./pages.js";
 
-export class CredentialsPage extends Pages {
+export class CredentialsPage extends HTMLElement {
     static tag = Pages.tag(this.name);
     constructor(){
         super();
@@ -11,7 +11,7 @@ export class CredentialsPage extends Pages {
         };
     };
     connectedCallback(){
-        this.cloneTemplate(CredentialsPage.tag);
+        // this.cloneTemplate(CredentialsPage.tag);
         const credLinks = this.querySelector('#credential-links');
         
         for(const img in this.credentials){

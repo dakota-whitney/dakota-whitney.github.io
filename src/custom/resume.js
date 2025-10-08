@@ -1,12 +1,12 @@
 import { Pages } from "./pages.js";
 
-export class ResumePage extends Pages {
+export class ResumePage extends HTMLElement {
     static tag = Pages.tag(this.name);
     constructor(){
         super();
     };
     connectedCallback(){
-        this.cloneTemplate(ResumePage.tag);
+        // this.cloneTemplate(ResumePage.tag);
     };
 };
 

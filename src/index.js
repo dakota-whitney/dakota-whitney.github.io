@@ -6,4 +6,4 @@ import { ResumePage } from "./custom/resume.js";
 import { CredentialsPage } from "./custom/credentials.js";
 
 const navItems = new NavBar("Projects", "Resume", "Credentials");
-new Pages(navItems, AboutPage, ProjectsPage, ResumePage, CredentialsPage);
+new Pages(navItems);

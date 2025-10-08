@@ -1,7 +1,7 @@
 import { Octokit } from "https://esm.sh/@octokit/rest";
 import { Pages } from "./pages.js";
 
-export class ProjectsPage extends Pages {
+export class ProjectsPage extends HTMLElement {
     static tag = Pages.tag(this.name);
     constructor(){
         super();
@@ -15,16 +15,27 @@ export class ProjectsPage extends Pages {
         customElements.define(RepoTab.tag, RepoTab);
     }
     async connectedCallback(){
-        this.cloneTemplate(ProjectsPage.tag);
-
-        const repoNames = await this.fetchRepos();
-        const thisRepo = repoNames.find(repoName => repoName.includes(this.username));
+        try {
+            const repoNames = await this.fetchRepos();
+            const thisRepo = repoNames.find(repoName => repoName.includes(this.username));
         
-        const repoFiles = await this.fetchFiles(thisRepo);
-        this.repos = [thisRepo, repoFiles];
+            const repoFiles = await this.fetchFiles(thisRepo);
+            this.repos = [thisRepo, repoFiles];
+        }
+        catch(e) {
+            this.querySelector('.nav').remove();
+
+            const alert = document.createElement('div');
+            alert.classList.add('alert', 'alert-warning');
+            alert.role = 'alert';
+            alert.innerText = 'Cannot load repositories from GitHub at this time. Please try again later.';
+
+            this.querySelector("#projects").append(alert);
+        }
     }
     async fetchRepos(n = 0){
         let {data: repos} = await this.gh.repos.listForUser({username: this.username});
+
         repos = repos
             .sort(({updated_at: a}, {updated_at: b}) => new Date(b) - new Date(a))
             .map(({name}) => name)
@@ -86,13 +97,13 @@ export class ProjectsPage extends Pages {
     }
 };
 
-class RepoTab extends Pages {
+class RepoTab extends HTMLElement {
     static tag = Pages.tag(this.name);
     constructor(){
         super();
     }
     connectedCallback(){
-        this.cloneTemplate(RepoTab.tag);
+        // this.cloneTemplate(RepoTab.tag);
     }
 };
 
