@@ -1,13 +1,12 @@
 import { Pages } from "./pages.js";
 
 export class ResumePage extends HTMLElement {
+    static title = Pages.title(this.name);
     static tag = Pages.tag(this.name);
     constructor(){
         super();
     };
     connectedCallback(){
-        // this.cloneTemplate(ResumePage.tag);
+        console.log(this.constructor.name + ' connected to DOM');
     };
 };
-
-customElements.define(ResumePage.tag, ResumePage);

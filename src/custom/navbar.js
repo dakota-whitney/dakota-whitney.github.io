@@ -1,12 +1,12 @@
 export class NavBar {
-    constructor(...navLinks){
+    constructor(pages){
         const brand = document.querySelector('.navbar-brand');
         const navBar = document.querySelector('ul.navbar-nav');
 
-        for(const link of navLinks){
+        for(const page of pages.slice(1)){
             const pageNav = document.createElement('li');
             pageNav.classList.add('nav-item');
-            pageNav.innerHTML = `<a class='nav-link' aria-current='page'>${link}</a>`;
+            pageNav.innerHTML = `<a class='nav-link' aria-current='page'>${page.title}</a>`;
             navBar.append(pageNav);
         };
 

@@ -1,6 +1,7 @@
 import { Pages } from "./pages.js";
 
 export class CredentialsPage extends HTMLElement {
+    static title = Pages.title(this.name);
     static tag = Pages.tag(this.name);
     constructor(){
         super();
@@ -11,7 +12,7 @@ export class CredentialsPage extends HTMLElement {
         };
     };
     connectedCallback(){
-        // this.cloneTemplate(CredentialsPage.tag);
+        console.log(this.constructor.name + ' connected to DOM');
         const credLinks = this.querySelector('#credential-links');
         
         for(const img in this.credentials){
@@ -26,5 +27,3 @@ export class CredentialsPage extends HTMLElement {
         };
     };
 };
-
-customElements.define(CredentialsPage.tag, CredentialsPage);

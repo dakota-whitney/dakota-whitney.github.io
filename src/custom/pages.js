@@ -4,20 +4,24 @@ export class Pages {
     const snakeCase = className.replace(camelCase, m => '-' + m);
     return snakeCase.toLowerCase();
   };
-  constructor(navItems = []){
-    const pages = document.querySelectorAll('template[id$="page"]');
-    if(navItems.length != pages.length) return;
-
+  static title(className){
+    const [title] = className.match(/[A-Z][a-z]+/);
+    return title;
+  };
+  constructor(navItems, pages){
     this.root = document.querySelector('.carousel');
     this.carousel = bootstrap.Carousel.getOrCreateInstance(this.root);
+    
     const innerRoot = this.root.querySelector('.carousel-inner');
+    const templates = document.querySelectorAll('template[id$="page"]');
 
-    for(const page of pages){
-      const carouselPage = document.createElement(page.id, {is: page.id});
+    pages.forEach((page, i) => {
+      customElements.define(page.tag, page);
+      const carouselPage = document.createElement(page.tag, {is: page.tag});
       carouselPage.classList.add('carousel-item');
-      carouselPage.append(page.content.cloneNode(true))
+      carouselPage.append(templates[i].content.cloneNode(true));
       innerRoot.append(carouselPage);
-    };
+    });
     
     navItems[0].addEventListener('click', () => this.carousel.to(0));
     navItems.slice(1).forEach((nav, i) => nav.addEventListener('click', () => this.carousel.to(i + 1)));

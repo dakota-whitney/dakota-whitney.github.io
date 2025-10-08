@@ -2,6 +2,7 @@ import { Octokit } from "https://esm.sh/@octokit/rest";
 import { Pages } from "./pages.js";
 
 export class ProjectsPage extends HTMLElement {
+    static title = Pages.title(this.name);
     static tag = Pages.tag(this.name);
     constructor(){
         super();
@@ -15,6 +16,8 @@ export class ProjectsPage extends HTMLElement {
         customElements.define(RepoTab.tag, RepoTab);
     }
     async connectedCallback(){
+        console.log(this.constructor.name + ' connected to DOM');
+        
         try {
             const repoNames = await this.fetchRepos();
             const thisRepo = repoNames.find(repoName => repoName.includes(this.username));
@@ -101,10 +104,8 @@ class RepoTab extends HTMLElement {
     static tag = Pages.tag(this.name);
     constructor(){
         super();
-    }
+    };
     connectedCallback(){
-        // this.cloneTemplate(RepoTab.tag);
-    }
+        console.log(this.constructor.name + ' created');
+    };
 };
-
-customElements.define(ProjectsPage.tag, ProjectsPage);

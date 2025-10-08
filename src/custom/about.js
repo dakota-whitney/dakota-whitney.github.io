@@ -1,6 +1,7 @@
 import { Pages } from "./pages.js";
 
 export class AboutPage extends HTMLElement {
+    static title = Pages.title(this.name);
     static tag = Pages.tag(this.name);
     constructor(){
         super();
@@ -11,6 +12,7 @@ export class AboutPage extends HTMLElement {
         };
     };
     connectedCallback(){
+        console.log(this.constructor.name + ' connected to DOM');
         Object.entries(this.contactLinks).forEach(this.addContactLink, this);
     };
     addContactLink([icon, link], i){
@@ -22,5 +24,3 @@ export class AboutPage extends HTMLElement {
         contactLinks[i].href = link;
     };
 };
-
-customElements.define(AboutPage.tag, AboutPage);
