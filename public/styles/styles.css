@@ -34,7 +34,6 @@ img:hover {
 .navbar-brand{
   color: var(--bs-white);
   transition: 100ms linear;
-  cursor: pointer;
 }
 
 .navbar-brand:hover{
@@ -55,6 +54,7 @@ img:hover {
   display: none;
 }
 
+.navbar-brand,
 .nav-item {
   cursor: pointer;
 }
@@ -71,10 +71,6 @@ img:hover {
 
 .navbar-toggler {
   color: var(--bs-white) !important
-}
-
-#search {
-  margin: 0 0 10px 0;
 }
 
 .carousel-control-prev,
@@ -102,22 +98,14 @@ main {
   height: 100%;
 }
 
-.card-group {
-  display: flex;
-  justify-content: center;
-  flex-flow: column;
-  align-items: center;
-}
-
-.card .spinner-border {
-  margin: 25%;
-}
-
 .display-1 {
   font-family: 'The Nautigal', cursive;
 }
 
-#project-links,
+#projects > .display-1{
+  margin-top: 50%;
+}
+
 #credential-links {
   display: flex;
   flex-flow: column wrap;
@@ -126,33 +114,18 @@ main {
 }
 
 .nav-tabs {
+  background-color: darkslategrey;
+}
+
+.tab-content {
   background-color: var(--bs-white);
-  margin: 0 0 30px 0;
   border: 1px solid;
-  width: 100%;
 }
 
-repo-tab {
-  width: 95%;
-}
-
-.repo-name {
-  color: var(--bs-white);
-  background-color: darkslategray;
-  text-align: left;
-}
-
-code {
-  width: 200px;
-  height: 850px;
-  text-align: left;
-  overflow: scroll;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-code::-webkit-scrollbar {
-  display: none;
+.project-img {
+  margin: 10px 0 10px 0;
+  width: 75%;
+  height: auto;
 }
 
 #resume {
@@ -163,23 +136,6 @@ code::-webkit-scrollbar {
 #fs-web {
   height: 300px;
   width: 300px;
-}
-
-/* @keyframes fadeIn {
-  0% {
-    transform: translateX(-300px);
-    opacity: 0%;
-  }
-  100% {
-    transform: translateX(0px);
-    opacity: 100%;
-  }
-} */
-
-@media (min-width: 768px) {
-  code {
-    width: 500px;
-  }
 }
 
 @media (min-width: 992px) {
@@ -193,48 +149,22 @@ code::-webkit-scrollbar {
     height: 115%;
   }
 
-  #search {
-    margin: 0;
-  }
-
   .carousel-item {
     padding-top: initial;
     height: initial;
     overflow: initial;
   }
 
-  .card-group {
-    flex-flow: row;
-    justify-content: initial;
-    overflow: scroll;
-  }
-
   #projects {
     margin-top: 5%
   }
 
-  #project-links,
+  #projects > .display-1{
+    margin-top: initial;
+  }
+
   #credential-links {
     flex-flow: row wrap;
-  }
-
-  .project-img {
-    height: 150px;
-    width: auto;
-    max-width: 100%;
-  }
-
-  repo-tab {
-    width: 100%;
-  }
-
-  .repo-name{
-    font-weight: bolder;
-  }
-
-  code {
-    width: 100%;
-    height: 400px;
   }
 
   #resume-page {

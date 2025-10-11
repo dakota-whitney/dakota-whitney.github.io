@@ -6,23 +6,23 @@ export class CredentialsPage extends HTMLElement {
     constructor(){
         super();
         this.credentials = {
-            "public/img/sps.png": "https://basno.com/users/dakotawhitney",
-            "public/img/codecademy.png": "https://www.codecademy.com/profiles/dakota-whitney",
-            "public/img/fcc.png": "https://www.freecodecamp.org/dakota-whitney"
+            sps: "https://basno.com/users/dakotawhitney",
+            codecademy: "https://www.codecademy.com/profiles/dakota-whitney",
+            fcc: "https://www.freecodecamp.org/dakota-whitney"
         };
     };
     connectedCallback(){
         console.log(this.constructor.name + ' connected to DOM');
         const credLinks = this.querySelector('#credential-links');
         
-        for(const img in this.credentials){
+        for(let img in this.credentials){
             const credLink = document.createElement('a');
             credLink.classList.add('credential');
             credLink.target = '_blank';
             credLink.href = this.credentials[img];
 
-            const alt = img.split("/").pop();
-            credLink.innerHTML = `<img src="${img}" class="credential-img" alt="${alt}" />`
+            img = `public/img/${img}.png`;
+            credLink.innerHTML = `<img src="${img}" class="img-fluid credential-img" alt="${img}" />`
             credLinks.append(credLink);
         };
     };
