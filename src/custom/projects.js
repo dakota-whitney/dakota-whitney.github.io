@@ -1,4 +1,3 @@
-// import { Octokit } from "https://esm.sh/@octokit/rest";
 import { Pages } from "./pages.js";
 
 export class ProjectsPage extends HTMLElement {
@@ -14,21 +13,31 @@ export class ProjectsPage extends HTMLElement {
     };
     connectedCallback(){
         console.log(this.constructor.name + ' connected to DOM');
+        const mobile = Pages.mobile.matches;
+        const projects = this.querySelector('#projects');
 
-        const projNavs = this.querySelector('.nav-tabs');
-        const projTabs = this.querySelector('.tab-content');
+        if(mobile) projects.classList.add('d-flex', 'flex-column', 'justify-content-center');
+        else {
+            projects.innerHTML += `<ul class="nav nav-tabs nav-fill" role="tablist" data-bs-theme="light"></ul>`;
+            projects.innerHTML += `<div class="tab-content"></div>`
+        };
 
         Object.entries(this.projects).forEach(([img, url], i) => {
-            const projNav = this.projectNav(img, i);
-            projNavs.append(projNav);
+            if(mobile){
+                projects.innerHTML += `<h2 class="lead">${img}</h2>`;
+                return projects.append(this.projectImg(img, url));
+            };
+
+            const projTab = this.projectTab(img, i);
+            projects.querySelector('.nav-tabs').append(projTab);
             const projPane = this.projectPane(img, url, i);
-            projTabs.append(projPane);
+            projects.querySelector('.tab-content').append(projPane);
         });
     };
-    projectNav(img, i){
-        const projNav = document.createElement('li');
-        projNav.classList.add('nav-item');
-        projNav.role = 'presentation';
+    projectTab(img, i){
+        const projTab = document.createElement('li');
+        projTab.classList.add('nav-item');
+        projTab.role = 'presentation';
 
         const navBtn = document.createElement('button');
         navBtn.classList.add('nav-link');
@@ -42,8 +51,8 @@ export class ProjectsPage extends HTMLElement {
         navBtn.setAttribute('aria-selected', i == 0);
         navBtn.innerText = img;
 
-        projNav.append(navBtn);
-        return projNav;
+        projTab.append(navBtn);
+        return projTab;
     };
     projectPane(img, url, i){
         const projPane = document.createElement('div');
@@ -53,123 +62,16 @@ export class ProjectsPage extends HTMLElement {
         projPane.setAttribute('aria-labelledby', img.toLowerCase());
         projPane.tabIndex = 0;
 
-        const projLink = document.createElement('a');
-        projLink.href = url
-        projLink.target = '_blank';
-
-        img = `public/img/${img.toLowerCase()}.png`;
-        projLink.innerHTML = `<img src="${img}" class="img-fluid project-img" alt="${img}"/>`;
-
+        const projLink = this.projectImg(img, url);
         projPane.append(projLink);
         return projPane;
     };
-}
-
-// export class ProjectsPage extends HTMLElement {
-//     static title = Pages.title(this.name);
-//     static tag = Pages.tag(this.name);
-//     constructor(){
-//         super();
-//         this.gh = new Octokit({});
-//         this.username = 'dakota-whitney';
-//         this.query = {
-//             owner: this.username,
-//             headers: {'X-GitHub-Api-Version': '2022-11-28'}
-//         }
-//         this._repos = new Map();
-//         customElements.define(RepoTab.tag, RepoTab);
-//     }
-//     async connectedCallback(){
-//         console.log(this.constructor.name + ' connected to DOM');
-        
-//         try {
-//             const repoNames = await this.fetchRepos();
-//             const thisRepo = repoNames.find(repoName => repoName.includes(this.username));
-        
-//             const repoFiles = await this.fetchFiles(thisRepo);
-//             this.repos = [thisRepo, repoFiles];
-//         }
-//         catch(e) {
-//             this.querySelector('.nav').remove();
-
-//             const alert = document.createElement('div');
-//             alert.classList.add('alert', 'alert-warning');
-//             alert.role = 'alert';
-//             alert.innerText = 'Cannot load repositories from GitHub at this time. Please try again later.';
-
-//             this.querySelector("#projects").append(alert);
-//         }
-//     }
-//     async fetchRepos(n = 0){
-//         let {data: repos} = await this.gh.repos.listForUser({username: this.username});
-
-//         repos = repos
-//             .sort(({updated_at: a}, {updated_at: b}) => new Date(b) - new Date(a))
-//             .map(({name}) => name)
-        
-//         return n > 0 ? repos.slice(0, n) : repos;
-//     }
-//     async fetchFiles(repo, branch = "main"){
-//         const query = {...this.query, repo: repo};
-
-//         let {data: {tree}} = await this.gh.git.getTree({
-//             ...query,
-//             tree_sha: branch,
-//             recursive: "true"
-//         });
-
-//         const includeExts = /\.(html|css|js|py)$/
-//         tree = tree
-//             .filter(({type, path}) => type == "blob" && path.match(includeExts))
-//             .map(({path}) => path);
-
-//         const repoFiles = new Map();
-
-//         for(const file of tree){
-//             const {data: {content}} = await this.gh.repos.getContent({...query, path: file});
-//             repoFiles.set(file, atob(content));
-//         };
-
-//         return repoFiles;
-//     }
-//     get repos(){
-//         return this._repos;
-//     }
-//     set repos([repo, code]){
-//         const repoTabs = this.querySelector(".nav-tabs");
-//         const repoTab = document.createElement(RepoTab.tag, {is: RepoTab.tag});
-
-//         repoTabs.append(repoTab);
-//         repoTab.id = repo;
-//         repoTab.querySelector(".nav-link").innerText = repoTab.id;
-
-//         const listGroup = repoTab.querySelector(".list-group");
-
-//         for(const filePath of code.keys()){
-//             const fileItem = document.createElement("li");
-//             fileItem.classList.add("list-group-item");
-//             fileItem.onclick = () => this.showCode(repo, filePath);
-//             fileItem.innerText = filePath.split("/").pop();
-//             listGroup.append(fileItem);
-//         };
-
-//         this._repos.set(repo, code);
-//     }
-//     showCode(repo, filePath){
-//         const repoTab = document.getElementById(repo);
-//         repoTab.querySelector("ol.breadcrumb").innerHTML = filePath.split("/")
-//             .map(path => `<li class="breadcrumb-item" aria-current="page">${path}`)
-//             .join("</li>") + "</li>";
-//         repoTab.querySelector("code").innerText = this.repos.get(repo).get(filePath);
-//     }
-// };
-
-// class RepoTab extends HTMLElement {
-//     static tag = Pages.tag(this.name);
-//     constructor(){
-//         super();
-//     };
-//     connectedCallback(){
-//         console.log(this.constructor.name + ' created');
-//     };
-// };
+    projectImg(img, url){
+        const projLink = document.createElement('a');
+        projLink.href = url;
+        projLink.target = '_blank';
+        img = `public/img/${img.toLowerCase()}.png`;
+        projLink.innerHTML = `<img src="${img}" class="img-fluid project-img" alt="${img}"/>`;
+        return projLink;
+    };
+};

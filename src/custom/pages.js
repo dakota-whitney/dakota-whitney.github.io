@@ -8,6 +8,7 @@ export class Pages {
     const [title] = className.match(/[A-Z][a-z]+/);
     return title;
   };
+  static mobile = window.matchMedia("(width < 768px)");
   constructor(navItems, pages){
     this.root = document.querySelector('.carousel');
     this.carousel = bootstrap.Carousel.getOrCreateInstance(this.root);

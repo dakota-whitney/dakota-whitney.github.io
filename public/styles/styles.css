@@ -102,24 +102,11 @@ main {
   font-family: 'The Nautigal', cursive;
 }
 
-#projects > .display-1{
-  margin-top: 50%;
-}
-
 #credential-links {
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
   align-items: center;
-}
-
-.nav-tabs {
-  background-color: darkslategrey;
-}
-
-.tab-content {
-  background-color: var(--bs-white);
-  border: 1px solid;
 }
 
 .project-img {
@@ -138,6 +125,17 @@ main {
   width: 300px;
 }
 
+@media (min-width: 768px) {
+  .nav-tabs {
+    background-color: darkslategrey;
+  }
+
+  .tab-content {
+    background-color: var(--bs-white);
+    border: 1px solid;
+  }
+}
+
 @media (min-width: 992px) {
   .navbar-brand span:not(.dw){
     display: initial;
@@ -153,14 +151,6 @@ main {
     padding-top: initial;
     height: initial;
     overflow: initial;
-  }
-
-  #projects {
-    margin-top: 5%
-  }
-
-  #projects > .display-1{
-    margin-top: initial;
   }
 
   #credential-links {
