@@ -10,6 +10,6 @@ export class NavBar {
             navBar.append(pageNav);
         };
 
-        return [brand, ...navBar.children]
+        return [brand, ...navBar.children];
     };
 };
