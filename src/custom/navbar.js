@@ -12,4 +12,4 @@ export class NavBar {
 
         return [brand, ...navBar.children]
     };
-}
+};
