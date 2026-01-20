@@ -1,0 +1,83 @@
+.dsg {
+    color: darkslategrey !important;
+}
+
+.w-0 {
+    width: 0 !important;
+}
+
+nav {
+    height: 100vh;
+    width: 33.3%;
+    background-color: darkslategrey;
+    transition: width .25s;
+    box-shadow: black 2.5px 0 5px;
+}
+
+i {
+    font-size: 2rem;
+    color: white;
+    position: fixed;
+    left: 10px;
+    z-index: 1;
+}
+
+.nav-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100px;
+    color: white;
+}
+
+.nav-link:hover {
+    background-color: white;
+    color: darkslategrey !important;
+}
+
+i:hover,
+.nav-link:hover {
+    cursor: pointer;
+}
+
+.nav-link:visited {
+    color: white;
+}
+
+.spinner-border {
+    position: absolute;
+    margin-top: 50vh;
+    margin-left: 50%;
+    width: 3rem;
+    height: 3rem;
+}
+
+.repo {
+    width: 100%;
+    height: 90vh;
+    overflow: scroll;
+    overflow-x: hidden;
+    margin: 40px 0 0 20px;
+}
+
+h1 {
+    text-decoration: underline;
+}
+
+@media (min-width: 768px){
+    nav {
+        width: 22.5%;
+    }
+}
+
+@media (min-width: 992px){
+    nav {
+        width: 17.5%;
+    }
+}
+
+@media (min-width: 1200px){
+    nav {
+        width: 12.5%;
+    }
+}
