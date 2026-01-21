@@ -1,5 +1,4 @@
 import { Octokit } from "https://esm.sh/octokit";
-import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
 export const titleCase = repoName => {
     const title = repoName.slice(1).replaceAll(/[-|_|A-Z][a-z]/g, m => " " + m[1].toUpperCase());
@@ -44,9 +43,6 @@ export class Repo {
 
         Repo.gh.rest.repos.getReadme(query).then(rm => {
             console.log(rm);
-
-            rm = atob(rm.data.content);
-            rm = marked.parse(rm);
 
             spinner.classList.toggle('d-none');
             Repo.element.innerHTML = `<h1>${titleCase(repoName)}</h1><br/>${rm}`;
