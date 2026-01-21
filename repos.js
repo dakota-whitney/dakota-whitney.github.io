@@ -43,9 +43,8 @@ export class Repo {
 
         Repo.gh.rest.repos.getReadme(query).then(rm => {
             console.log(rm);
-
             spinner.classList.toggle('d-none');
-            Repo.element.innerHTML = `<h1>${titleCase(repoName)}</h1><br/>${rm}`;
+            Repo.element.innerHTML = `<h1>${titleCase(repoName)}</h1><br/>${rm.data}`;
         });
     };
 };
