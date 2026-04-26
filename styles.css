@@ -17,6 +17,7 @@ i {
 
 /* Set height for inner nav link */
 .nav-link {
+    padding: 0 !important;
     height: 100px;
 }
 
@@ -36,6 +37,10 @@ i:hover,
 /* Set color for clicked nav links */
 .nav-link:visited {
     color: var(--bs-text-white);
+}
+
+.nav-link:nth-child(1){
+    margin-top: 25%;
 }
 
 /* Set spinner position and size */
@@ -63,6 +68,9 @@ i:hover,
 @media (min-width: 992px){
     nav {
         width: 17.5%;
+    }
+    .nav-link:nth-child(1){
+        margin-top: initial;
     }
 }
 

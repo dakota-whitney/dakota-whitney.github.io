@@ -48,7 +48,15 @@ export class NavBar {
         const navItem = document.createElement("li");
         navItem.classList.add("nav-item");
         const navLink = document.createElement("a");
-        navLink.classList.add("nav-link", "d-flex", "flex-column", "justify-content-center", "text-white");
+        navLink.classList.add(
+            "nav-link",
+            "d-flex",
+            "flex-column",
+            "justify-content-center",
+            "text-break",
+            "text-center",
+            "text-white"
+        );
         navLink.innerText = repo.title;
         navItem.append(navLink);
         navItem.onclick = ({currentTarget}) => this.displayRepo(currentTarget, repo);

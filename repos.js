@@ -64,6 +64,9 @@ async function getRepos(){
     return repos;
 };
 
+// Instantiate new DOM parser for the read me file
+const parser = new DOMParser();
+
 // Custom Repo class
 export class Repo {
 
@@ -93,9 +96,15 @@ export class Repo {
         spinner.classList.toggle("d-none");
         const rmQuery = {...readMeQuery, repo: this.name}
         const { data } = await octokit.rest.repos.getReadme(rmQuery);
-        const readMe = data.replace("container-lg", "container-fluid");
-        this.readMe = sanitize.createHTML(readMe);
+        const readMe = sanitize.createHTML(data);
+        this._readMe = parser.parseFromString(readMe, "text/html");
+        this._readMe.querySelector("article").classList.replace("container-lg", "container-fluid");
+        this._readMe.querySelectorAll(".anchor").forEach(anchor => anchor.remove());
         spinner.classList.toggle("d-none");
-        return this.readMe;
+    };
+
+    //Return the Read Me DOM as a string
+    get readMe(){
+        return this._readMe?.getElementById("readme").outerHTML;
     };
 };
