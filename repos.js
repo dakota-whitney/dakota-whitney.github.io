@@ -1,6 +1,5 @@
 // Import Octokit and trusted HTML types
 import { Octokit } from "https://esm.sh/octokit";
-import { sanitize } from "./policies.js";
 
 // Instantiate new octokit and set user name
 const octokit = new Octokit();
@@ -25,86 +24,68 @@ const readMeQuery = {
     }
 };
 
-// Set references to DOM elements
-const alert = document.querySelector(".alert");
-const spinner = document.querySelector(".spinner-border");
-
-/**
- * Change repository base name to title case
- * Replace dashes and underscores with a space
- * Change first letter after spaces to upper case
- * @param {*} repoName 
- * @returns 
- */
-function titleCase(repoName){
-    const regex = /[-|_|A-Z][a-z]/g;
-    const addSpace = m => " " + m[1].toUpperCase();
-    const title = repoName.slice(1).replaceAll(regex, addSpace);
-    return repoName[0].toUpperCase() + title;
-};
-
-/**
- * Fetch all repositories using Octokit and base query
- * If fetch fails, display alert and log error
- * @returns Array of GitHub repository objects
- */
-async function getRepos(){
-    spinner.classList.toggle("d-none");
-    const repos = [];
-
-    try {
-        const { data } = await octokit.rest.repos.listForUser(repoQuery);
-        repos.push(...data);
-    } catch(error) {
-        alert.classList.remove("d-none");
-        console.error(error);
-    };
-
-    spinner.classList.toggle("d-none");
+export async function getRepos(){
+    const { data: repos } = await octokit.rest.repos.listForUser(repoQuery);
     return repos;
 };
+
+// const spinner = document.querySelector(".spinner-border");
+// const alert = document.querySelector(".alert");
+const repo = document.getElementById("repo");
 
 // Instantiate new DOM parser for the read me file
 const parser = new DOMParser();
 
-// Custom Repo class
-export class Repo {
-
-    //Set getRepos as static function to use in index.js
-    static getRepos = getRepos;
-
-    /**
-     * Sanitize and set retrieved repository name
-     * @param {*} repo GitHub repository object
-     */
-    constructor(repo){
-        this.name = sanitize.createHTML(repo.name).toString();
+class RepoLink extends HTMLLIElement {
+    constructor(){
+        super();
+        this.onclick = () => this.displayReadMe();
     };
 
-    // Set getter for title-cased repository name
-    get title(){
-        return titleCase(this.name);
+    connectedCallback(){
+        console.log(this.dataset.repoName + " connected to DOM");
+        this.classList.add("nav-item");
+        const navAnchor = document.createElement("a");
+        navAnchor.classList.add("nav-link");
+        navAnchor.href = "#" + this.dataset.repoName;
+        navAnchor.innerHTML = "<i class='nav-icon bi bi-git'></i>";
+        navAnchor.innerHTML += `<p>${this.dataset.repoName}</p>`
+        this.append(navAnchor);
     };
 
-    /**
-     * Retrieve Read Me using Octokit and base query
-     * Replace bootstrap container class and sanitize HTML
-     * Set sanitized HTML as Read Me
-     * @returns 
-     */
+    displayReadMe(){
+        document.querySelector(".nav-item.active")?.classList.remove("active");
+        this.classList.add("active");
+
+        if(this.readMe) return repo.innerHTML = this.readMe;
+
+        repo.innerHTML = "";
+        spinner.classList.remove("d-none");
+
+        this.getReadMe()
+            .then(() => {
+                spinner.classList.add("d-none");
+                repo.innerHTML = this.readMe;
+            })
+            .catch(error => {
+                spinner.classList.add("d-none");
+                repoAlert.classList.remove("d-none");
+                console.error(error);
+            });
+    };
+
     async getReadMe(){
-        spinner.classList.toggle("d-none");
-        const rmQuery = {...readMeQuery, repo: this.name}
+        const rmQuery = {...readMeQuery, repo: this.dataset.repoName}
         const { data } = await octokit.rest.repos.getReadme(rmQuery);
-        const readMe = sanitize.createHTML(data);
+        const readMe = DOMPurify.sanitize(data);
         this._readMe = parser.parseFromString(readMe, "text/html");
         this._readMe.querySelector("article").classList.replace("container-lg", "container-fluid");
         this._readMe.querySelectorAll(".anchor").forEach(anchor => anchor.remove());
-        spinner.classList.toggle("d-none");
     };
 
-    //Return the Read Me DOM as a string
     get readMe(){
         return this._readMe?.getElementById("readme").outerHTML;
     };
 };
+
+customElements.define("repo-link", RepoLink, {extends: "li"});
