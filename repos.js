@@ -65,7 +65,7 @@ class RepoLink extends HTMLLIElement {
         this.getReadMe()
             .then(() => {
                 spinner.classList.add("d-none");
-                repo.innerHTML = this.readMe;
+                repo.innerHTML += this.readMe;
             })
             .catch(error => {
                 spinner.classList.add("d-none");
@@ -79,6 +79,11 @@ class RepoLink extends HTMLLIElement {
         const { data } = await octokit.rest.repos.getReadme(rmQuery);
         const readMe = DOMPurify.sanitize(data);
         this._readMe = parser.parseFromString(readMe, "text/html");
+        const header = document.createElement("h1");
+        header.classList.add("text-decoration-underline");
+        header.innerText = this.dataset.repoName;
+        const readMeRoot = this._readMe.getElementById("readme");
+        readMeRoot.insertBefore(header, readMeRoot.children[0]);
         this._readMe.querySelector("article").classList.replace("container-lg", "container-fluid");
         this._readMe.querySelectorAll(".anchor").forEach(anchor => anchor.remove());
     };
