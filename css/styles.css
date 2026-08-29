@@ -1,4 +1,9 @@
 /* Set sidebar bg color */
 .app-sidebar {
     background-color: Indigo;
-};
+}
+
+/* Set cursor for repository links */
+repo-link a {
+    cursor: pointer;
+}
